@@ -1,0 +1,102 @@
+﻿@model Gp_V1.Models.ProviderViewModel
+
+@{
+    ViewBag.Title = "DashBoard";
+}
+
+<h2 class="text-primary mb-3">@Session["UserName"] Dashboard</h2>
+
+<p>
+    @Html.ActionLink("Create New Job", "Create", "Job", null, new { @class="btn btn-success"})
+</p>
+
+<hr />
+
+<h4 class="text-primary mb-3 d-inline-block" style="border-bottom: 2px solid #0094ff">Current Jobs [@Model.Jobs.Count()]</h4>
+
+@if (Model.Jobs.Count() == 0)
+{
+    <div class="alert alert-danger">No Published Job Yet!</div>
+}
+else
+{
+    <table class="table table-responsive table-bordered">
+        <tr>
+            <th>Job Title</th>
+            <th>Job Category</th>
+            <th>Job Content</th>
+            <th>Job Type</th>
+            <th>Publish Date</th>
+            <th>Job State</th>
+            <td></td>
+        </tr>
+        @foreach (var job in Model.Jobs)
+        {
+            <tr>
+                <td>@job.JobTitle</td>
+                <td>@job.JobCategory.JobCategoryName</td>
+                <td>@job.JobDescription.Substring(0, 10) ...</td>
+                <td>@job.JobType.JobTypeName</td>
+                <td>@job.PublishedDate</td>
+                @if (job.JobState == true)
+                {
+                    <td>
+                        <button type="button" class="btn btn-success">Open</button>
+                    </td>
+                }
+                else
+                {
+                    <td>
+                        <button type="button" class="btn btn-danger">Closed</button>
+                    </td>
+                }
+                <td></td>
+            </tr>
+        }
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>
+                @Html.ActionLink("Show All", "ShowPublishedJobs", "Job", null, new { @class = "btn btn-dark" })
+            </td>
+        </tr>
+    </table>
+}
+
+<hr />
+
+<h4 class="text-primary mb-3 d-inline-block" style="border-bottom: 2px solid #0094ff">Matched Seekers [@Model.SeekerRegistrations.Count()]</h4>
+
+@if (Model.SeekerRegistrations.Count() == 0)
+{
+    <div class="alert alert-danger">No Matched Seekers!</div>
+}
+else
+{
+    <table class="table table-responsive table-bordered">
+        <tr>
+            <th>Seeker Name</th>
+            <th>Seeker Search On Job Title</th>
+            <th></th>
+        </tr>
+        @foreach (var seeker in Model.SeekerRegistrations)
+        {
+            <tr>
+                <td>@seeker.Name</td>
+                <td>@seeker.SearchOnJobTitle</td>
+                <td></td>
+            </tr>
+        }
+        <tr>
+            <td></td>
+            <td></td>
+            <td>
+                @Html.ActionLink("Show All", "ShowMatchedSeekers", null, new { @class = "btn btn-dark" })
+            </td>
+        </tr>
+    </table>
+}

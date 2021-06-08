@@ -1,0 +1,124 @@
+﻿@model IEnumerable<Gp_V1.Models.LikedJobs>
+
+@{
+    ViewBag.Title = "Show Liked Jobs";
+}
+
+<h2 class="text-primary mb-3">Liked Jobs</h2>
+
+<hr />
+
+@if (Model.Count() == 0)
+{
+    <div class="alert alert-danger">
+        No Liked Jobs Yet!
+    </div>
+}
+else
+{
+    <table class="table table-bordered table-responsive">
+        <tr>
+            <th>
+                Company Name
+            </th>
+            <th>
+                Job Title
+            </th>
+            <th>
+                Job Category
+            </th>
+            <th>
+                Job Type
+            </th>
+            <th>
+                Job Content
+            </th>
+            <th>
+                Job State
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Job.RegisterUser.CompanyName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Job.JobTitle)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Job.JobCategory.JobCategoryName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Job.JobType.JobTypeName)
+                </td>
+                <td>
+                    @item.Job.JobDescription.Substring(0, 15) ...
+                </td>
+                @if (item.Job.JobState == true)
+                {
+                    <td>
+                        <button class="btn btn-success">Open</button>
+                    </td>
+                }
+                else
+                {
+                    <td>
+                        <button class="btn btn-danger">Closed</button>
+                    </td>
+                }
+                <td>
+                    @Html.ActionLink("Details", "Details", new { id = item.JobId }, new { @class = "btn btn-primary" })
+                    <button class="btn btn-danger deleteBtn" data-id="@item.Id">Delete</button>
+                </td>
+            </tr>
+        }
+
+    </table>
+}
+
+<hr />
+
+<p>
+    @Html.ActionLink("Back", "Index", "Home", null, new { @class = "btn btn-dark" })
+</p>
+
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+@section scripts{
+    <script>
+        $(() => {
+            allDeleteBtns = $(".deleteBtn");
+            [...allDeleteBtns].forEach(btn => {
+                $(btn).click(() => {
+                    id = $(btn).data("id");
+                    $.ajax({
+                        type: "Get",
+                        url: "/Job/DeleteLikedJob/" + id,
+                        success: res => {
+                            if (res.result == 1) {
+                                swal({
+                                    title: "Delete Liked Job!",
+                                    text: "You Deleted the Liked Job Successfully!",
+                                    icon: "success",
+                                    button: null,
+                                });
+                                setTimeout(() => {
+                                    location.reload();
+                                }, 3000);
+                            } else {
+                                swal({
+                                    title: "Delete Liked Job!",
+                                    text: "Delete the Liked Job Failer!",
+                                    icon: "error",
+                                    button: null,
+                                });
+                            }
+                        },
+                    });
+                });
+            });
+        });
+    </script>
+}

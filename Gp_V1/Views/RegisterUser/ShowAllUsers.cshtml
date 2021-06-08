@@ -1,0 +1,202 @@
+﻿@model IEnumerable<Gp_V1.Models.RegisterUser>
+@using GridMvc.Html
+@using Gp_V1.Context
+@{ 
+    MyDbContext db = new MyDbContext();
+}
+@{
+    ViewBag.Title = "ShowAllUsers";
+}
+
+<h2 class="text-primary mb-4">All Providers [@Model.Count()]</h2>
+
+@if (Model.Count() == 0)
+{
+
+
+    <div class="alert alert-danger">No Provider Register Yet!</div>
+}
+else
+{
+<div style="width: 100%">
+    @Html.Grid(Model).Columns(columns =>
+    {
+        columns.Add(c => c.Name).Titled("Name").Filterable(true);
+        columns.Add(c => c.CompanyName).Titled("Company Name").Filterable(true);
+
+        columns.Add()
+        .Titled("Num. of publish Jobs")
+        .Encoded(false)
+        .Sanitized(false)
+        .SetWidth(30)
+        .RenderValueAs(o => @<a href="~/Job/GetJobInCompany/@o.Id"><b>[@db.Jobs.Where(j => j.RegisterUserId == o.Id).Count()] Jobs</b></a>)
+        .Filterable(false);
+
+        columns.Add()
+        .Titled("Num. of Applicant")
+        .Encoded(false)
+        .Sanitized(false)
+        .SetWidth(30)
+        .RenderValueAs(o => @<b>[@db.ApplyedJobs.Where(a => a.Job.RegisterUserId == o.Id).Count()]</b>)
+        .Filterable(false);
+
+        columns.Add(c => c.IsActive).Titled("Is Active").Filterable(true);
+
+        columns.Add()
+        .Encoded(false)
+        .Sanitized(false)
+        .SetWidth(30)
+        .RenderValueAs(o => @Html.ActionLink("Details", "UserDetails", new { id = o.Id }, new { @class = "btn btn-primary" }))
+        .Filterable(false);
+
+        columns.Add()
+        .Encoded(false)
+        .Sanitized(false)
+        .SetWidth(30)
+        .RenderValueAs(o => @<button class="btn btn-info editBtn" data-id="@o.Id" data-toggle="modal" data-target="#editModal">Edit</button>)
+        .Filterable(false);
+
+    }).WithPaging(2).Sortable(true)
+</div>
+    <hr />
+    @*
+            <table class="table table-bordered table-responsive">
+                <tr>
+                    <th>
+                        Provider Name
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Email)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.CompanyName)
+                    </th>
+                    <th>State</th>
+                    <th></th>
+                </tr>
+
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Email)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CompanyName)
+                        </td>
+                        @if (item.IsActive == true)
+                        {
+                            <td>
+                                <button class="btn btn-success">Active</button>
+                            </td>
+                        }
+                        else
+                        {
+                            <td>
+                                <button class="btn btn-danger">Block</button>
+                            </td>
+                        }
+                        <td>
+                            <button class="btn btn-info editBtn" data-id="@item.Id" data-toggle="modal" data-target="#editModal">Edit</button>
+                            @Html.ActionLink("Details", "UserDetails", new { id = item.Id }, new { @class = "btn btn-primary" })
+                        </td>
+                    </tr>
+                }
+
+            </table>
+        *@
+        }
+
+        <p>
+            @Html.ActionLink("Back", "Index", "AdminViewModel", null, new { @class = "btn btn-dark" })
+        </p>
+
+        <!-- Edit Modal -->
+        <div class="modal fade editModal" id="editModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3 class="modal-title text-primary" id="exampleModalLabel" style="display: inline-block">Edit Provider State</h3>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true" style="font-size: 40px;color: #ff0000">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body" id="edit-content">
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-success" id="editBtn">Edit</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+        @section scripts{
+            <script>
+                $(() => {
+                    // Edit Provider [GET/POST]
+                    //GET
+                    editBtns = $(".editBtn");
+                    [...editBtns].forEach(btn => {
+                        $(btn).on("click", () => {
+                            id = $(btn).data("id");
+                            $.ajax({
+                                type: "GET",
+                                url: "/RegisterUser/EditProvider/" + id,
+                            }).done(function (data) {
+                                var values = `
+                                                    <form id="editForm">
+                                                        <input type="hidden" disabled id="userId" name="Id" value="${data.id}" />
+                                                        <div class="form-group">
+                                                            <label class="form-control-label">User State: </label>
+                                                            <select class="custom-select" id="userState" name="IsActive">
+                                                                <option value="${data.isActive}">${(data.isActive == false) ? 'Block' : 'Active'}</option>
+                                                                <option value="${!data.isActive}">${(!data.isActive == false) ? 'Block' : 'Active'}</option>
+                                                            </select>
+                                                        </div>
+                                                    </form>
+                                                    `
+                                $(".editModal #edit-content").empty();
+                                $(".editModal #edit-content").append(values);
+                            });
+                        });
+                    });
+                    //POST
+                    $("#editBtn").click(() => {
+                        userState = $("#userState").val(),
+                            userId = $("#userId").val(),
+                            editFormData = { Id: userId, IsActive: (userState == 'false' ? false : true) };
+                        $.ajax({
+                            type: "POST",
+                            url: "/RegisterUser/EditProvider",
+                            data: editFormData,
+                            success: (res) => {
+                                if (res.result == 1) {
+                                    swal({
+                                        title: "Edit Provider State",
+                                        text: "Edit Provider State Successfully!",
+                                        icon: "success",
+                                        button: null
+                                    });
+                                    setTimeout(() => {
+                                        location.reload();
+                                    }, 3000);
+                                } else {
+                                    swal({
+                                        title: "Edit Provider State Failed",
+                                        text: "Edit Provider State Error!",
+                                        icon: "error",
+                                        button: null
+                                    });
+                                }
+                            }
+                        });
+                    });
+                });
+            </script>
+        }

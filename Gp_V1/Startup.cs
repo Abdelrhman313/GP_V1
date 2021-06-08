@@ -1,0 +1,29 @@
+﻿using Gp_V1.Context;
+using Microsoft.AspNet.Identity;
+using Microsoft.Owin;
+using Microsoft.Owin.Security.Cookies;
+using Owin;
+using System.Linq;
+
+[assembly: OwinStartup(typeof(Gp_V1.Startup))]
+
+namespace Gp_V1
+{
+    public class Startup
+    {
+        public void Configuration(IAppBuilder app)
+        {
+            MyDbContext db = new MyDbContext();
+            if (!db.Admins.Any(a=>a.Name == "Abdelrhman"))
+            {
+                db.Admins.Add(new Models.Admin { Id = 1, Name = "Abdelrhman", Email = "abdelrhman44@gmail.com", Password = "01128479486" });
+                db.SaveChanges();
+            }
+            // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=316888
+            app.UseCookieAuthentication(new CookieAuthenticationOptions
+            {
+                AuthenticationType = DefaultAuthenticationTypes.ApplicationCookie,
+            });
+        }
+    }
+}

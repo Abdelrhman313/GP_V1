@@ -1,0 +1,91 @@
+﻿@model IEnumerable<Gp_V1.Models.ApplyedJob>
+
+@{
+    ViewBag.Title = "Applyed Jobs";
+}
+
+<h2 class="text-primary mb-3">Applyed Jobs</h2>
+
+<hr />
+
+@if (Model.Count() == 0)
+{
+    <div class="alert alert-danger">No Applyed Job Yet!</div>
+}
+else
+{
+
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Job.JobTitle)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Job.RegisterUser.CompanyName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ApplyDate)
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Job.JobTitle)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Job.RegisterUser.CompanyName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ApplyDate)
+                </td>
+                <td>
+                    @Html.ActionLink("Details", "Details", new { id = item.JobId }, new { @class = "btn btn-primary" })
+                    @if(Session["SeekerUser"] != null) { 
+                        <button class="btn btn-danger deleteBtn" data-id="@item.Id">Delete</button>
+                    }
+                </td>
+            </tr>
+        }
+    </table>
+}
+
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+@section scripts{
+    <script>
+        $(() => {
+            allDeleteBtns = $(".deleteBtn");
+            [...allDeleteBtns].forEach(btn => {
+                $(btn).click(() => {
+                    id = $(btn).data("id");
+                    $.ajax({
+                        type: "GET",
+                        url: "/Job/DeleteApplyedJob/" + id,
+                        success: res => {
+                            if (res.result == 1) {
+                                swal({
+                                    title: "Delete Applyed Job!",
+                                    text: "You Delete Apply For This Job Successfully!",
+                                    icon: "success",
+                                    button: null,
+                                });
+                                setTimeout(() => {
+                                    location.reload();
+                                }, 4000)
+                            } else {
+                                swal({
+                                    title: "Delete Applyed Job!",
+                                    text: "Deleted Failed!",
+                                    icon: "error",
+                                    button: null,
+                                });
+                            }
+                        }
+                    })
+                });
+            });
+        });
+    </script>
+}

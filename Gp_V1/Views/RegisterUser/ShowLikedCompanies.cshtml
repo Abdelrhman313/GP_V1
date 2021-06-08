@@ -1,0 +1,61 @@
+﻿@model IEnumerable<Gp_V1.Models.LikedCompany>
+
+@{
+    ViewBag.Title = "ShowLikedCompanies";
+}
+
+<h2 class="text-primary mb-3">Liked Companies</h2>
+
+<hr />
+
+@if (Model.Count() == 0)
+{
+    <div class="alert alert-danger">
+        No Liked Companies
+    </div>
+}
+else {
+    <table class="table table-responsive table-bordered">
+        <tr>
+            <th>
+                Provider Name
+            </th>
+            <th>
+                Job Title
+            </th>
+            <th>
+                Company Name
+            </th>
+            <th>
+                Liked Date
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.RegisterUser.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.RegisterUser.JobTitle.JobTitleName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.RegisterUser.CompanyName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LikedCompanyDate)
+                </td>
+                <td>
+                    @Html.ActionLink("Details", "UserProfile","RegisterUser", new {id = item.RegisterUserId}, new { @class="btn btn-primary"})
+                </td>
+            </tr>
+        }
+
+    </table>
+}
+
+<p>
+    @Html.ActionLink("Back", "Index", "Home", null, new { @class = "btn btn-dark" })
+</p>

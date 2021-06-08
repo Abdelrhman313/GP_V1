@@ -1,0 +1,62 @@
+﻿@model Gp_V1.Models.JobViewModel
+
+@{
+    ViewBag.Title = "Job Applyers Details";
+}
+
+<style>
+    div.alert.alert-primary{
+        border-left: 6px solid #0094ff;
+        padding: 10px;
+        text-transform: capitalize;
+        font-size: 22px;
+        font-weight: 500;
+    }
+</style>
+
+<h2 class="text-primary mb-3">Job Applyers Details</h2>
+
+<hr />
+
+<div class="jobDetails">
+
+    <div class="alert alert-primary">@Model.JobTitle</div>
+
+    <table class="table table-responsive table-bordered">
+        <tr>
+            <th>Seeker Name</th>
+            <th>Seeker E-mail</th>
+            <th>Seeker Location</th>
+            <th>Seeker Job Title</th>
+            <th>Apply Date</th>
+            <th></th>
+        </tr>
+        @foreach (var seeker in Model.ApplyedJobs)
+        {
+            <tr>
+                <td>
+                    @seeker.SeekerRegistration.Name
+                </td>
+                <td>
+                    @seeker.SeekerRegistration.Email
+                </td>
+                <td>
+                    @seeker.SeekerRegistration.City.CityName
+                </td>
+                <td>
+                    @seeker.SeekerRegistration.JobTitle.JobTitleName
+                </td>
+                <td>
+                    @seeker.ApplyDate
+                </td>
+                <td>
+                    @Html.ActionLink("View Profile", "SeekerDetails", "RegisterUser", new { id = seeker.SeekerRegistrationId}, new { @class="btn btn-primary"})
+                </td>
+            </tr>
+        }
+    </table>
+</div>
+
+<p>
+    @Html.ActionLink("Back To List", "ShowApplyersForEachJob", null, new {@class="btn btn-dark"})
+</p>

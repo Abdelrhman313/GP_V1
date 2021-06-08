@@ -1,0 +1,38 @@
+﻿@model IEnumerable<Gp_V1.Models.Admin>
+@using GridMvc.Html
+@{
+    ViewBag.Title = "All Admins";
+}
+
+<h2 class="text-primary mb-3">All Admins [@Model.Count()]</h2>
+
+<p>
+    @Html.ActionLink("Add New Admin", "AddNewAdmin", null, new { @class = "btn btn-success" })
+</p>
+
+
+<div style="width: 100%">
+    @Html.Grid(Model).Columns(columns =>
+{
+    columns.Add(o => o.Name)
+    .Titled("Name")
+    .Filterable(true)
+    .Sortable(true);
+
+    columns.Add(o => o.Email)
+    .Titled("E-mail")
+    .Filterable(true)
+    .Sortable(true);
+
+    columns.Add()
+    .Titled("Actions")
+    .Encoded(false)
+    .Sanitized(false)
+    .RenderValueAs(a => Html.ActionLink("Delete", "Delete", new { id = a.Id }, new { @class = "btn btn-danger" }))
+    .Filterable(false)
+    .Sortable(false);
+
+}).WithPaging(4).Sortable(true)
+</div>
+
+<hr />

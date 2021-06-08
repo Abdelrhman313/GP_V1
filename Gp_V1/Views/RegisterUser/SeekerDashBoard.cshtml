@@ -1,0 +1,227 @@
+﻿@model Gp_V1.Models.SeekerViewModel
+
+@{
+    ViewBag.Title = "DashBoard | Seeker";
+}
+
+<h2 class="text-primary mb-3">@Session["SeekerUser"] DashBoard</h2>
+<hr />
+
+<h4 class="text-primary mb-3 d-inline-block" style="border-bottom: 2px solid #0094ff">Applyed Jobs [@Model.ApplyedJobs.Count()]</h4>
+
+@if (Model.ApplyedJobs.Count() == 0)
+{
+    <div class="alert alert-danger">No Applyed Jobs Yet!</div>
+}
+else
+{
+    <table class="table table-responsive table-bordered">
+        <tr>
+            <th>Job Title</th>
+            <th>Job Category</th>
+            <th>Job Content</th>
+            <th>Job Type</th>
+            <th>Job State</th>
+            <th>Apply Date</th>
+            <th></th>
+        </tr>
+        @foreach (var applyedJob in Model.ApplyedJobs)
+        {
+            <tr>
+                <td>@applyedJob.Job.JobTitle</td>
+                <td>@applyedJob.Job.JobCategory.JobCategoryName</td>
+                <td>@applyedJob.Job.JobDescription.Substring(0, 10) ...</td>
+                <td>@applyedJob.Job.JobType.JobTypeName</td>
+                @if (applyedJob.Job.JobState == true)
+                {
+                    <td>
+                        <button type="button" class="btn btn-success">Open</button>
+                    </td>
+                }
+                else
+                {
+                    <td>
+                        <button type="button" class="btn btn-danger">Closed</button>
+                    </td>
+                }
+                <td>
+                    @applyedJob.ApplyDate
+                </td>
+                <td></td>
+            </tr>
+        }
+    <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td>
+            @Html.ActionLink("Show All", "ShowApplyedJobs", "Job", null, new { @class = "btn btn-dark" })
+        </td>
+    </tr>
+    </table>
+}
+
+<hr />
+
+<h4 class="text-primary mb-3 d-inline-block" style="border-bottom: 2px solid #0094ff">Matched Jobs [@Model.Jobs.Count()]</h4>
+
+@if (Model.Jobs.Count() == 0)
+{
+    <div class="alert alert-danger">No Matched Jobs Yet!</div>
+}
+else
+{
+    <table class="table table-responsive table-bordered">
+        <tr>
+            <th>Job Title</th>
+            <th>Job Category</th>
+            <th>Job Content</th>
+            <th>Job Type</th>
+            <th>Job State</th>
+            <td></td>
+        </tr>
+        @foreach (var job in Model.Jobs)
+        {
+            <tr>
+                <td>@job.JobTitle</td>
+                <td>@job.JobCategory.JobCategoryName</td>
+                <td>@job.JobDescription.Substring(0, 10) ...</td>
+                <td>@job.JobType.JobTypeName</td>
+                @if (job.JobState == true)
+                {
+                    <td>
+                        <button type="button" class="btn btn-success">Open</button>
+                    </td>
+                }
+                else
+                {
+                    <td>
+                        <button type="button" class="btn btn-danger">Closed</button>
+                    </td>
+                }
+                <td></td>
+            </tr>
+        }
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>
+                @Html.ActionLink("Show All", "ShowMatchedJobs", "Job", null, new { @class = "btn btn-dark" })
+            </td>
+        </tr>
+    </table>
+}
+
+<hr />
+
+<h4 class="text-primary mb-3 d-inline-block" style="border-bottom: 2px solid #0094ff">Liked Jobs [@Model.LikedJobs.Count()]</h4>
+
+@if (Model.LikedJobs.Count() == 0)
+{
+    <div class="alert alert-danger">No Liked Jobs Yet!</div>
+}
+else
+{
+    <table class="table table-responsive table-bordered">
+        <tr>
+            <th>Job Title</th>
+            <th>Job Category</th>
+            <th>Job Content</th>
+            <th>Job Type</th>
+            <th>Job State</th>
+            <td></td>
+        </tr>
+        @foreach (var likedJob in Model.LikedJobs)
+        {
+            <tr>
+                <td>@likedJob.Job.JobTitle</td>
+                <td>@likedJob.Job.JobCategory.JobCategoryName</td>
+                <td>@likedJob.Job.JobDescription.Substring(0, 10) ...</td>
+                <td>@likedJob.Job.JobType.JobTypeName</td>
+                @if (likedJob.Job.JobState == true)
+                {
+                    <td>
+                        <button type="button" class="btn btn-success">Open</button>
+                    </td>
+                }
+                else
+                {
+                    <td>
+                        <button type="button" class="btn btn-danger">Closed</button>
+                    </td>
+                }
+                <td></td>
+            </tr>
+        }
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>
+                @Html.ActionLink("Show All", "ShowLikedJobs", "Job", null, new { @class = "btn btn-dark" })
+            </td>
+        </tr>
+    </table>
+}
+
+<hr />
+
+<h4 class="text-primary mb-3 d-inline-block" style="border-bottom: 2px solid #0094ff">Liked Companies [@Model.LikedCompanies.Count()]</h4>
+
+@if (Model.LikedCompanies.Count() == 0)
+{
+    <div class="alert alert-danger">No Liked Companies Yet!</div>
+}
+else
+{
+    <table class="table table-responsive table-bordered">
+        <tr>
+            <th>Provider Name</th>
+            <th>Job Title</th>
+            <th>Company Name</th>
+            <th>Liked Date</th>
+            <th>Company State</th>
+            <td></td>
+        </tr>
+        @foreach (var company in Model.LikedCompanies)
+        {
+            <tr>
+                <td>@company.RegisterUser.Name</td>
+                <td>@company.RegisterUser.JobTitle</td>
+                <td>@company.RegisterUser.CompanyName)</td>
+                <td>@company.LikedCompanyDate</td>
+                @if (company.RegisterUser.IsActive == true)
+                {
+                    <td>
+                        <button type="button" class="btn btn-success">Active</button>
+                    </td>
+                }
+                else
+                {
+                    <td>
+                        <button type="button" class="btn btn-danger">Block</button>
+                    </td>
+                }
+                <td></td>
+            </tr>
+        }
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>
+                @Html.ActionLink("Show All", "ShowLikedCompanies", "RegisterUser", null, new { @class = "btn btn-dark" })
+            </td>
+        </tr>
+    </table>
+}

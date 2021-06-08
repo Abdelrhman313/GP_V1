@@ -1,0 +1,161 @@
+﻿@model Gp_V1.Models.SeekerRegistration
+
+@{
+    ViewBag.Title = "SeekerDetails";
+}
+
+<style>
+    .info {
+        position: relative;
+    }
+
+        .info .likedBtn {
+            position: absolute;
+            right: 0;
+            cursor: pointer;
+        }
+
+    div.info div {
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+    }
+
+        div.info div span:first-of-type {
+            width: 40%;
+            font-size: 17px;
+            font-weight: 500;
+        }
+
+            div.info div span:first-of-type::after {
+                content: " :";
+            }
+</style>
+
+
+<div class="row">
+    <div class="col-md-5">
+        <div class="info pt-4">
+            @if (Session["UserName"] != null)
+            {
+                <button class="btn btn-info likedBtn" data-id="@Model.Id">
+                    Like
+                    <i class="fa fa-hand-o-up"></i>
+                </button>
+            }
+            <h2 class="text-primary mb-3">Seeker Details</h2>
+            <hr />
+            <div>
+                <span>
+                    Name
+                </span>
+
+                <span>
+                    @Html.DisplayFor(model => model.Name)
+                </span>
+            </div>
+            <div>
+                <span>
+                    @Html.DisplayNameFor(model => model.Email)
+                </span>
+
+                <span>
+                    @Html.DisplayFor(model => model.Email)
+                </span>
+            </div>
+            <div>
+                <span>
+                    City
+                </span>
+
+                <span>
+                    @Html.DisplayFor(model => model.City.CityName)
+                </span>
+            </div>
+
+            <div>
+                <span>
+                    Searching Job Title
+                </span>
+
+                <span>
+                    @Html.DisplayFor(model => model.SearchOnJobTitle)
+                </span>
+            </div>
+            <div>
+                <span>
+                    State
+                </span>
+
+                @if (Model.IsActive == true)
+                {
+                    <span>
+                        <button type="button" class="btn btn-success">Active</button>
+                    </span>
+                }
+                else
+                {
+                    <span>
+                        <button type="button" class="btn btn-danger">Block</button>
+
+                    </span>
+                }
+            </div>
+        </div>
+    </div>
+    <div class="col-md-7">
+        <div class="img">
+            <img src="~/Images/personal_info.png" alt="image" class="img-fluid" />
+        </div>
+    </div>
+</div>
+
+<hr />
+
+<p class="mt-4">
+    @if (Session["AdminUser"] != null)
+    {
+        @Html.ActionLink("Back", "ShowAllSeekers", "RegisterUser", null, new { @class = "btn btn-dark" })
+    }
+
+    @if (Session["UserName"] != null && Session["JobTitle"] != null)
+    {
+        @Html.ActionLink("Back", "JobApplyersDetails", "Job", new { jobTitle = Convert.ToString(Session["JobTitle"]) }, new { @class = "btn btn-dark" })
+    }
+    @if (Session["UserName"] != null && Session["JobTitle"] == null)
+    {
+        @Html.ActionLink("Back To List", "ShowMatchedSeekers", null, new { @class = "btn btn-dark" })
+    }
+</p>
+
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+@section scripts{
+    <script>
+        $(() => {
+            $(".likedBtn").click(() => {
+                id = $(".likedBtn").data("id");
+                $.ajax({
+                    type: "GET",
+                    url: "/RegisterUser/LikeSeeker/" + id,
+                    success: res => {
+                        if (res.result == 1) {
+                            swal({
+                                title: "Liked Seeker!",
+                                text: "You Liked Seeker Successfully!",
+                                icon: "success",
+                                button: "OK",
+                            });
+                        } else {
+                            swal({
+                                title: "Liked Seeker!",
+                                text: "You Liked This Seeker Before!",
+                                icon: "error",
+                                button: "OK",
+                            });
+                        }
+                    },
+                })
+            });
+        });
+    </script>
+}

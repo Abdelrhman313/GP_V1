@@ -1,0 +1,43 @@
+﻿@model IEnumerable<Gp_V1.Models.JobViewModel>
+
+@{
+    ViewBag.Title = "Show Applyers For Each Job";
+}
+
+<h2 class="text-primary mb-3">Applyers For Each Job</h2>
+
+<hr />
+
+@if (Model.Count() == 0)
+{
+    <div class="alert alert-danger">No Applyers Yet!</div>
+}
+else
+{
+
+    <table class="table table-responsive table-bordered">
+        <tr>
+            <th>Job Title</th>
+            <th>Applicants</th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.JobTitle</td>
+                @{
+                    var count = 0;
+                }
+                @foreach (var job in item.ApplyedJobs)
+                {
+                    count++;
+                }
+                <td>@count</td>
+                <td>
+                    @Html.ActionLink("View Details", "JobApplyersDetails", new { jobTitle = item.JobTitle }, new { @class = "btn btn-primary" })
+                </td>
+            </tr>
+        }
+    </table>    
+}
