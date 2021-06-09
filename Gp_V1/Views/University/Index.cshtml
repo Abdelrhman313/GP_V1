@@ -27,11 +27,12 @@ else
         var totalUsers = db.SeekerRegistrations.Where(s => s.University.UniversityName == university.UniversityName).Count();
         if (totalUsers == 0)
         {
+            <button class="btn btn-info editBtn mr-1" data-id="@university.Id" data-toggle="modal" data-target="#editModal">Edit</button>
             <button class="btn btn-danger deleteBtn" data-id="@university.Id">Delete</button>
         }
         else
         {
-            <b></b>
+            <button class="btn btn-info editBtn" data-id="@university.Id" data-toggle="modal" data-target="#editModal">Edit</button>
         }
     }
 
@@ -51,12 +52,7 @@ else
             .Filterable(false);
 
             columns.Add()
-            .Encoded(false)
-            .Sanitized(false)
-            .RenderValueAs(o => @<button class="btn btn-info editBtn" data-id="@o.Id" data-toggle="modal" data-target="#editModal">Edit</button>)
-            .Filterable(false);
-
-            columns.Add()
+            .Titled("Actions")
             .Encoded(false)
             .Sanitized(false)
             .RenderValueAs(o => CustomRenderingOfColumn(o))
@@ -188,14 +184,14 @@ else
                         url: "/University/Edit/" + id,
                     }).done(function (data) {
                         var values = `
-                                            <form id="editForm">
-                                                <input type="hidden" id="universityId" value="${data.Id}" />
-                                                <div class="form-group">
-                                                    <label for="universityName" class="form-control-label">University Name:</label>
-                                                    <input type="text" class="form-control" id="universityName" name="universityName" value="${data.UniversityName}">
-                                                </div>
-                                            </form>
-                                            `
+                                                    <form id="editForm">
+                                                        <input type="hidden" id="universityId" value="${data.Id}" />
+                                                        <div class="form-group">
+                                                            <label for="universityName" class="form-control-label">University Name:</label>
+                                                            <input type="text" class="form-control" id="universityName" name="universityName" value="${data.UniversityName}">
+                                                        </div>
+                                                    </form>
+                                                    `
                         $(".editModal #edit-content").empty();
                         $(".editModal #edit-content").append(values);
                     });

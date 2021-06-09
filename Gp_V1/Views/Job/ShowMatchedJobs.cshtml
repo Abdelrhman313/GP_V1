@@ -1,10 +1,14 @@
 ﻿@model IEnumerable<Gp_V1.Models.Job>
+@using Gp_V1.Models
+@using Gp_V1.Context
+@using GridMvc.Html
 
 @{
+    MyDbContext db = new MyDbContext();
     ViewBag.Title = "ShowMatchedJobs";
 }
 
-<h2 class="text-primary mb-3">Show Matched Jobs</h2>
+<h2 class="text-primary mb-3">Show Matched Jobs [@Model.Count()]</h2>
 
 <hr />
 
@@ -16,83 +20,69 @@
 
 @if (Model.Count() == 0)
 {
-
-
     <div class="alert alert-danger">
         No Matched Jobs
     </div>
 }
 else
 {
-    <table class="table table-responsive table-bordered">
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.JobTitle)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.JobDescription)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.JobType.JobTypeName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Vacancy)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.NeededExperience)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Salary)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.JobState)
-            </th>
 
-            <th></th>
-        </tr>
-
-        @foreach (var item in Model)
+    @helper CustomRenderingOfColumnJobType(Job job)
+    {
+        if (job.JobState == true)
         {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.JobTitle)
-                </td>
-                <td>
-                    @item.JobDescription.Substring(0, 20) ....
-                </td>
-
-                <td>
-                    @Html.DisplayFor(modelItem => item.JobType.JobTypeName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Vacancy)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.NeededExperience)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Salary) $
-                </td>
-                @if (item.JobState == true)
-                {
-                    <td>
-                        <button class="btn btn-success">Open</button>
-                    </td>
-                }
-                else
-                {
-
-                    <td>
-                        <button class="btn btn-danger">Closed</button>
-                    </td>
-                }
-                <td>
-                    @Html.ActionLink("Details", "Details", new { id = item.Id }, new { @class = "btn btn-primary" })
-                </td>
-            </tr>
+            <b class="text-success">Open</b>
         }
+        else
+        {
+            <b class="text-danger">Close</b>
+        }
+    }
 
-    </table>
+    <div style="width: 100%">
+        @Html.Grid(Model).Columns(columns =>
+       {
+           columns.Add(c => c.JobTitle)
+           .Titled("Job Title")
+           .Filterable(true)
+           .Sortable(true);
+
+           columns.Add(c => c.JobCategory.JobCategoryName)
+           .Titled("Job Category")
+           .Filterable(true)
+           .Sortable(true);
+
+           columns.Add(c => c.JobType.JobTypeName)
+           .Titled("Job Type")
+           .Filterable(true)
+           .Sortable(true);
+
+           columns.Add()
+            .Titled("Num.of Applicants")
+            .Encoded(false)
+            .Sanitized(false)
+            .RenderValueAs(o => @<b class="d-block text-center">[@db.ApplyedJobs.Where(aj => aj.JobId == o.Id).Count()]</b>)
+            .Sortable(false)
+            .Filterable(false);
+
+           columns.Add()
+           .Titled("Job State")
+           .Encoded(false)
+           .Sanitized(false)
+           .RenderValueAs(o => CustomRenderingOfColumnJobType(o))
+           .Sortable(true)
+           .Filterable(true);
+
+           columns.Add()
+           .Titled("Actions")
+           .Encoded(false)
+           .Sanitized(false)
+           .RenderValueAs(o => Html.ActionLink("Details", "Details", new { id = o.Id }, new { @class = "btn btn-primary" }))
+           .Sortable(true)
+           .Filterable(true);
+
+       }).WithPaging(4).Sortable(true)
+    </div>
 
 }
 

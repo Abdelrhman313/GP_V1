@@ -37,7 +37,7 @@ else
                         <td>@item.CompanyName</td>
                         <td>@item.JobTitle.JobTitleName</td>
                         <td>
-                            <button class="btn btn-success">Active</button>
+                            <b class="text-success">Active</b>
                         </td>
                         <td>
                             @Html.ActionLink("Show Details", "UserDetails", "RegisterUser", new { id = item.Id }, new { @class = "btn btn-primary" })
@@ -89,7 +89,7 @@ else
                         <td>@item.EducationLevel.EducationLevelName</td>
                         <td>@item.City.CityName - @item.Country.CountryName</td>
                         <td>
-                            <button class="btn btn-success">Active</button>
+                            <b class="text-success">Active</b>
                         </td>
                         <td>
                             @Html.ActionLink("Show Details", "SeekerDetails", "RegisterUser", new { id = item.Id }, new { @class = "btn btn-primary" })

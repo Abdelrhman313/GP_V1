@@ -8,10 +8,10 @@
     .info {
         position: relative;
     }
-    .editProfile{
-        position: absolute;
-        top : 25px;
-        right: 0px;
+    .editProfile {
+        display: flex;
+        justify-content: start;
+        align-items: center;
     }
     .info img {
         width: 100px;
@@ -43,16 +43,17 @@
 <div class="row">
     <div class="col-md-6">
         <div class="info pt-4">
-            <h2 class="text-primary mb-3">User Profile</h2>
+            <h2 class="text-primary mb-3">@Model.Name Profile</h2>
             @if (Session["UserName"] != null)
             {
                 <p class="editProfile">
                     @Html.ActionLink("Edit Profile", "EditProfile", "RegisterUser", new { id = Session["UserId"] }, new { @class = "btn btn-dark" })
+                    @Html.ActionLink("Change Password", "ChangePassword", "RegisterUser", new { name = @Session["UserName"].ToString() }, new { @class = "btn btn-primary d-block p-2 m-1" })
                 </p>
             }
             <hr />
             <div>
-                <img src="~/Upload/ProvidersImage/@Model.ProviderImage" alt="provider image" class="img-fluid img-thumbnail"/>
+                <img src="~/Upload/ProvidersImage/@Model.ProviderImage" alt="provider image" class="img-fluid img-thumbnail" />
             </div>
 
             <div>
@@ -122,16 +123,25 @@
                 @if (Model.IsActive == true)
                 {
                     <span>
-                        <button type="button" class="btn btn-success">Active</button>
+                        <b class="text-success">Active</b>
                     </span>
                 }
                 else
                 {
                     <span>
-                        <button type="button" class="btn btn-danger">Block</button>
+                        <b class="text-danger">Block</b>
 
                     </span>
                 }
+            </div>
+            <div>
+                <span>
+                    Published Jobs
+                </span>
+
+                <span>
+                    @Html.ActionLink("[" + Model.Jobs.Count() + "]", "GetJobInCompany", "Job", new { id = Model.Id }, new { @class = "text-primary" })
+                </span>
             </div>
         </div>
     </div>

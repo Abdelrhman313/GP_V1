@@ -32,7 +32,13 @@
         .RenderValueAs(o => @<a href="~/Job/ShowMatchedJobs/@o.Id">[@db.Jobs.Where(j => j.JobTitle == o.SearchOnJobTitle).Count()] Jobs</a>)
         .Filterable(false);
 
-        columns.Add(c => c.IsActive).Titled("Is Active").Filterable(true);
+        columns.Add()
+        .Titled("User State")
+        .Encoded(false)
+        .Sanitized(false)
+        .SetWidth(30)
+        .RenderValueAs(o => @<b class="text-success">Active</b>)
+        .Filterable(false);
 
         columns.Add()
         .Encoded(false)
@@ -41,7 +47,7 @@
         .RenderValueAs(o => @Html.ActionLink("Details", "SeekerDetails", new { id = o.Id }, new { @class = "btn btn-primary" }))
         .Filterable(false);
 
-    }).WithPaging(2).Sortable(true)
+        }).WithPaging(2).Sortable(true)
 </div>
 
 <hr />

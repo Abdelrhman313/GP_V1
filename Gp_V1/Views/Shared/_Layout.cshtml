@@ -138,26 +138,19 @@
                             </a>
                             <ul class="dropdown-menu">
                                 <li class="dropdown-item">
-                                    @Html.ActionLink("Profile", "UserProfile", "RegisterUser", new { id = @Session["UserId"] }, new { @class = "btn btn-dark d-block p-2 m-1" })
-                                </li>
-                                <li class="dropdown-item">
                                     @Html.ActionLink("Dashboard", "DashBoard", "RegisterUser", new { id = @Session["UserId"] }, new { @class = "btn btn-dark d-block p-2 m-1" })
                                 </li>
                                 <li class="dropdown-item">
-                                    <a href="~/Job/ShowPublishedJobs" class="btn btn-dark d-block p-2 m-1">Show Published Jobs</a>
+                                    @Html.ActionLink("Profile", "UserProfile", "RegisterUser", new { id = @Session["UserId"] }, new { @class = "btn btn-dark d-block p-2 m-1" })
                                 </li>
                                 <li class="dropdown-item">
-                                    <a href="~/Job/ShowApplyersForEachJob" class="btn btn-dark d-block p-2 m-1">Show Applyers For Jobs</a>
+                                    <a href="~/Job/ShowPublishedJobs" class="btn btn-dark d-block p-2 m-1">Published Jobs</a>
                                 </li>
                                 <li class="dropdown-item">
-                                    <a href="~/RegisterUser/ShowMatchedSeekers" class="btn btn-dark d-block p-2 m-1">Show Matched Seekers</a>
-                                </li>
-                                <li class="dropdown-divider d-none d-sm-block"></li>
-                                <li class="dropdown-item">
-                                    <a href="~/RegisterUser/EditProfile/@Session["UserId"]" class="btn btn-primary d-block p-2 m-1">Edit Profile</a>
+                                    <a href="~/Job/ShowApplyersForEachJob" class="btn btn-dark d-block p-2 m-1">Applicants For Jobs</a>
                                 </li>
                                 <li class="dropdown-item">
-                                    @Html.ActionLink("Change Password", "ChangePassword", "RegisterUser", new { name = @Session["UserName"].ToString() }, new { @class = "btn btn-primary d-block p-2 m-1" })
+                                    <a href="~/RegisterUser/ShowMatchedSeekers" class="btn btn-dark d-block p-2 m-1">Matched Seekers</a>
                                 </li>
                             </ul>
                         </li>
@@ -172,30 +165,25 @@
                             </a>
                             <ul class="dropdown-menu">
                                 <li class="dropdown-item">
-                                    <a href="~/RegisterUser/SeekerProfile/@Session["SeekerId"]" class="btn btn-dark d-block p-2 m-1">Profile</a>
-                                </li>
-                                <li class="dropdown-item">
                                     <a href="~/RegisterUser/SeekerDashboard/@Session["SeekerId"]" class="btn btn-dark d-block p-2 m-1">Dashboard</a>
                                 </li>
                                 <li class="dropdown-item">
-                                    <a href="~/Job/ShowApplyedJobs" class="btn btn-dark d-block p-2 m-1">Show Applyed Jobs</a>
+                                    <a href="~/RegisterUser/SeekerProfile/@Session["SeekerId"]" class="btn btn-dark d-block p-2 m-1">Profile</a>
                                 </li>
                                 <li class="dropdown-item">
-                                    <a href="~/Job/ShowLikedJobs" class="btn btn-dark d-block p-2 m-1">Show Liked Jobs</a>
+                                    <a href="~/Job/ShowApplyedJobs" class="btn btn-dark d-block p-2 m-1">Applyed Jobs</a>
                                 </li>
                                 <li class="dropdown-item">
-                                    <a href="~/RegisterUser/ShowLikedCompanies" class="btn btn-dark d-block p-2 m-1">Show Liked Companies</a>
+                                    <a href="~/Job/ShowLikedJobs" class="btn btn-dark d-block p-2 m-1">Interested Jobs</a>
                                 </li>
                                 <li class="dropdown-item">
-                                    <a href="~/Job/ShowMatchedJobs" class="btn btn-dark d-block p-2 m-1">Show Matched Jobs</a>
-                                </li>
-                                <li class="dropdown-divider d-none d-sm-block"></li>
-                                <li class="dropdown-item">
-                                    <a href="~/RegisterUser/EditSeekerProfile/@Session["SeekerId"]" class="btn btn-primary d-block p-2 m-1">Edit Profile</a>
+                                    <a href="~/Job/ShowMatchedJobs" class="btn btn-dark d-block p-2 m-1">Matched Jobs</a>
                                 </li>
                                 <li class="dropdown-item">
-                                    @Html.ActionLink("Change Password", "ChangePassword", "RegisterUser", new { name = @Session["SeekerUser"].ToString() }, new { @class = "btn btn-primary d-block p-2 m-1" })
+                                    <a href="~/RegisterUser/ShowLikedCompanies" class="btn btn-dark d-block p-2 m-1">Liked Companies</a>
                                 </li>
+                                
+                                
                             </ul>
                         </li>
                         <li class="nav-item">@Html.ActionLink("LogOut", "LogOut", "RegisterUser", null, new { @class = "nav-link btn btn-danger logoutBtn" })</li>

@@ -9,10 +9,10 @@
         position: relative;
     }
 
-    .editProfile {
-        position: absolute;
-        top: 25px;
-        right: 0px;
+    .editMenu {
+        display: flex;
+        justify-content: start;
+        align-items: center;
     }
 
     .info img {
@@ -41,16 +41,18 @@
             div.info div span:first-of-type::after {
                 content: " :";
             }
+
 </style>
 
 <div class="row">
     <div class="col-md-6">
         <div class="info pt-4">
-            <h2 class="text-primary mb-3">User Profile</h2>
+            <h2 class="text-primary mb-3">@Model.Name Profile</h2>
             @if (Session["SeekerUser"] != null)
             {
-                <p class="editProfile">
-                    @Html.ActionLink("Edit Profile", "EditSeekerProfile", "RegisterUser", new { id = Session["SeekerId"] }, new { @class = "btn btn-dark" })
+                <p class="editMenu">
+                    <a class="btn btn-dark" href="~/RegisterUser/EditSeekerProfile/@Session["SeekerId"]">Edit Profile</a>
+                    <a class="btn btn-primary d-block p-2 m-1" href="~/RegisterUser/ChangePassword/@Session["SeekerUser"].ToString()">Change Password</a>
                 </p>
             }
             <hr />
@@ -129,14 +131,13 @@
                 @if (Model.IsActive == true)
                 {
                     <span>
-                        <button type="button" class="btn btn-success">Active</button>
+                        <b class="text-success">Active</b>
                     </span>
                 }
                 else
                 {
                     <span>
-                        <button type="button" class="btn btn-danger">Block</button>
-
+                        <b class="text-danger">Block</b>
                     </span>
                 }
             </div>
@@ -235,7 +236,7 @@
                 </span>
 
                 <span>
-                    @Html.DisplayFor(model => model.Salary)
+                    @Html.DisplayFor(model => model.Salary)$
                 </span>
             </div>
 
@@ -245,7 +246,7 @@
                 </span>
 
                 <span>
-                    @Html.DisplayFor(model => model.Duration)
+                    @Html.DisplayFor(model => model.Duration) Year
                 </span>
             </div>
 
@@ -299,7 +300,7 @@
                 </span>
 
                 <span>
-                    @Html.DisplayFor(model => model.CurrentSalary)
+                    @Html.DisplayFor(model => model.CurrentSalary)$
                 </span>
             </div>
 
@@ -309,7 +310,7 @@
                 </span>
 
                 <span>
-                    @Html.DisplayFor(model => model.CurrentDuration)
+                    @Html.DisplayFor(model => model.CurrentDuration) Year
                 </span>
             </div>
         </div>

@@ -88,3 +88,4 @@ C:\Users\Abdelrhman\source\repos\Gp_V1\Gp_V1\obj\Debug\Gp_V1.Migrations.EditSeek
 C:\Users\Abdelrhman\source\repos\Gp_V1\Gp_V1\obj\Debug\Gp_V1.Migrations.editUsersTables.resources
 C:\Users\Abdelrhman\source\repos\Gp_V1\Gp_V1\obj\Debug\Gp_V1.Migrations.editSeekerRegistrationtableAddedNewColumns.resources
 C:\Users\Abdelrhman\source\repos\Gp_V1\Gp_V1\bin\GridMvc.dll
+C:\Users\Abdelrhman\source\repos\Gp_V1\Gp_V1\obj\Debug\Gp_V1.csprojAssemblyReference.cache

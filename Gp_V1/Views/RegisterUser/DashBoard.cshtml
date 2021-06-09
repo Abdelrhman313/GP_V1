@@ -1,18 +1,28 @@
 ﻿@model Gp_V1.Models.ProviderViewModel
+@using Gp_V1.Models
+@using GridMvc.Html
+@using Gp_V1.Context
 
 @{
+    MyDbContext db = new MyDbContext();
     ViewBag.Title = "DashBoard";
 }
 
 <h2 class="text-primary mb-3">@Session["UserName"] Dashboard</h2>
 
 <p>
-    @Html.ActionLink("Create New Job", "Create", "Job", null, new { @class="btn btn-success"})
+    @Html.ActionLink("Create New Job", "Create", "Job", null, new { @class = "btn btn-success" })
 </p>
 
 <hr />
 
-<h4 class="text-primary mb-3 d-inline-block" style="border-bottom: 2px solid #0094ff">Current Jobs [@Model.Jobs.Count()]</h4>
+<h4 class="text-primary mb-3 d-flex" style="justify-content: space-between">
+    <span style="border-bottom: 2px solid #0094ff">
+        <i class="fa fa-dot-circle-o"></i>
+        Current Jobs
+    </span>
+    @Html.ActionLink("Show All", "ShowPublishedJobs", "Job", null, new { @class = "btn btn-dark" })
+</h4>
 
 @if (Model.Jobs.Count() == 0)
 {
@@ -20,56 +30,77 @@
 }
 else
 {
-    <table class="table table-responsive table-bordered">
-        <tr>
-            <th>Job Title</th>
-            <th>Job Category</th>
-            <th>Job Content</th>
-            <th>Job Type</th>
-            <th>Publish Date</th>
-            <th>Job State</th>
-            <td></td>
-        </tr>
-        @foreach (var job in Model.Jobs)
+
+    @helper CustomRenderingOfColumn(Job job)
+    {
+        if (job.JobState == true)
         {
-            <tr>
-                <td>@job.JobTitle</td>
-                <td>@job.JobCategory.JobCategoryName</td>
-                <td>@job.JobDescription.Substring(0, 10) ...</td>
-                <td>@job.JobType.JobTypeName</td>
-                <td>@job.PublishedDate</td>
-                @if (job.JobState == true)
-                {
-                    <td>
-                        <button type="button" class="btn btn-success">Open</button>
-                    </td>
-                }
-                else
-                {
-                    <td>
-                        <button type="button" class="btn btn-danger">Closed</button>
-                    </td>
-                }
-                <td></td>
-            </tr>
+            <b class="text-success">Open</b>
         }
-        <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td>
-                @Html.ActionLink("Show All", "ShowPublishedJobs", "Job", null, new { @class = "btn btn-dark" })
-            </td>
-        </tr>
-    </table>
+        else
+        {
+            <b class="text-danger">Close</b>
+        }
+    }
+
+    <div style="width: 100%">
+        @Html.Grid(Model.Jobs.ToList()).Columns(columns =>
+       {
+           columns.Add(o => o.JobTitle)
+           .Titled("Job Title")
+           .Filterable(true)
+           .Sortable(true);
+
+           columns.Add(o => o.JobType.JobTypeName)
+           .Titled("Job Type")
+           .Filterable(true)
+           .Sortable(true);
+
+           columns.Add(o => o.PublishedDate)
+           .Titled("Published Date")
+           .Filterable(true)
+           .Sortable(true);
+
+           columns.Add()
+           .Titled("Job State")
+           .Encoded(false)
+           .Sanitized(false)
+           .RenderValueAs(o => CustomRenderingOfColumn(o))
+           .Sortable(true)
+           .Css("text-center");
+
+           columns.Add()
+           .Titled("Num.of Applicants")
+           .Encoded(false)
+           .Sanitized(false)
+           .RenderValueAs(o => @<b>[@db.ApplyedJobs.Where(aj => aj.JobId == o.Id).Count()]</b>)
+.Sortable(true)
+.Css("text-center");
+
+columns.Add()
+.Titled("Num.of Matched Seekers")
+.Encoded(false)
+.Sanitized(false)
+.RenderValueAs(o => @<b>[@db.SeekerRegistrations.Where(s => s.SearchOnJobTitle == o.JobCategory.JobCategoryName).Count()]</b>)
+.Sortable(true)
+.Css("text-center");
+
+}).WithPaging(4).Sortable(true)
+    </div>
+
 }
 
+<br />
 <hr />
+<br />
 
-<h4 class="text-primary mb-3 d-inline-block" style="border-bottom: 2px solid #0094ff">Matched Seekers [@Model.SeekerRegistrations.Count()]</h4>
+<h4 class="text-primary mb-3 d-flex" style="justify-content: space-between">
+    <span style="border-bottom: 2px solid #0094ff">
+        <i class="fa fa-dot-circle-o"></i>
+        Matched Seekers
+    </span>
+    @Html.ActionLink("Show All", "ShowMatchedSeekers", null, new { @class = "btn btn-dark" })
+</h4>
 
 @if (Model.SeekerRegistrations.Count() == 0)
 {
@@ -77,26 +108,57 @@ else
 }
 else
 {
-    <table class="table table-responsive table-bordered">
-        <tr>
-            <th>Seeker Name</th>
-            <th>Seeker Search On Job Title</th>
-            <th></th>
-        </tr>
-        @foreach (var seeker in Model.SeekerRegistrations)
+
+    @helper CustomRenderingOfColumn2(SeekerRegistration seeker)
+    {
+        if (seeker.IsActive == true)
         {
-            <tr>
-                <td>@seeker.Name</td>
-                <td>@seeker.SearchOnJobTitle</td>
-                <td></td>
-            </tr>
+            <b class="text-success">Active</b>
         }
-        <tr>
-            <td></td>
-            <td></td>
-            <td>
-                @Html.ActionLink("Show All", "ShowMatchedSeekers", null, new { @class = "btn btn-dark" })
-            </td>
-        </tr>
-    </table>
+        else
+        {
+            <b class="text-danger">Block</b>
+        }
+    }
+
+    <div style="width: 100%">
+        @Html.Grid(Model.SeekerRegistrations.ToList()).Columns(columns =>
+       {
+           columns.Add(o => o.Name)
+           .Titled("Seeker Name")
+           .Filterable(true)
+           .Sortable(true);
+
+           columns.Add(o => o.CurrentJobTitle)
+           .Titled("Current Job Title")
+           .Filterable(true)
+           .Sortable(true);
+
+
+           columns.Add()
+           .Titled("Seeker State")
+           .Encoded(false)
+           .Sanitized(false)
+           .RenderValueAs(o => CustomRenderingOfColumn2(o))
+           .Sortable(true)
+           .Css("text-center");
+
+           columns.Add()
+           .Titled("Num.of Applied Jobs")
+           .Encoded(false)
+           .Sanitized(false)
+           .RenderValueAs(o => @<b>[@db.ApplyedJobs.Where(aj => aj.SeekerRegistrationId == o.Id).Count()]</b>)
+            .Sortable(true)
+            .Css("text-center");
+
+            columns.Add()
+            .Titled("Num.of Matched Jobs")
+            .Encoded(false)
+            .Sanitized(false)
+            .RenderValueAs(o => @<b>[@db.Jobs.Where(j => j.JobCategory.JobCategoryName == o.SearchOnJobTitle).Count()]</b>)
+            .Sortable(true)
+            .Css("text-center");
+
+        }).WithPaging(4).Sortable(true)
+    </div>
 }

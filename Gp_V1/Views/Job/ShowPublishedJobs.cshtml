@@ -1,10 +1,14 @@
 ﻿@model IEnumerable<Gp_V1.Models.Job>
+@using Gp_V1.Models
+@using GridMvc.Html
+@using Gp_V1.Context
 
 @{
+    MyDbContext db = new MyDbContext();
     ViewBag.Title = "ShowPublishedJobs";
 }
 
-<h2 class="text-primary mb-3">Published Jobs</h2>
+<h2 class="text-primary mb-3">Published Jobs [@Model.Count()]</h2>
 
 <p>
     @Html.ActionLink("Create New Job", "Create", null, new { @class = "btn btn-success" })
@@ -16,59 +20,81 @@
 }
 else
 {
-    <table class="table table-responsive table-bordered">
-        <tr>
-            <th>
-                Job Title
-            </th>
-            <th>
-                Job Category
-            </th>
-            <th>
-                Job Type
-            </th>
-            <th>
-                Job Content
-            </th>
-            <th>
-                Job State
-            </th>
-            <th></th>
-        </tr>
 
-        @foreach (var item in Model)
+    @helper CustomRenderingOfColumn(Job job)
+    {
+        if (job.JobState == true)
         {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.JobTitle)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.JobCategory.JobCategoryName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.JobType.JobTypeName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.JobDescription).ToString().Substring(0, 10) ....
-        </td>
-        @if (item.JobState == true)
-        {
-            <td>
-                <button type="button" class="btn btn-success">Open</button>
-            </td>
+            <b class="text-success">Open</b>
         }
         else
         {
-            <td>
-                <button type="button" class="btn btn-danger">Closed</button>
-            </td>
+            <b class="text-danger">Close</b>
         }
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id = item.Id }, new { @class = "btn btn-primary" })
-            @Html.ActionLink("Details", "Details", new { id = item.Id }, new { @class = "btn btn-info" })
-            @Html.ActionLink("Delete", "Delete", new { id = item.Id }, new { @class = "btn btn-danger" })
-        </td>
-    </tr>
+    }
+
+
+    @helper CustomRenderingOfColumn2(Job job)
+    {
+        if (Session["UserName"] != null)
+        {
+            @Html.ActionLink("Edit", "Edit", new { id = job.Id }, new { @class = "btn btn-primary mr-1" })
+            @Html.ActionLink("Details", "Details", new { id = job.Id }, new { @class = "btn btn-info mr-1" })
+            @Html.ActionLink("Delete", "Delete", new { id = job.Id }, new { @class = "btn btn-danger" })
         }
-    </table>
+        else
+        {
+            <b></b>
+        }
+    }
+
+    <div style="width: 100%">
+        @Html.Grid(Model).Columns(columns =>
+       {
+           columns.Add(o => o.JobTitle)
+           .Titled("Job Title")
+           .Filterable(true)
+           .Sortable(true);
+
+           columns.Add(o => o.JobType.JobTypeName)
+           .Titled("Job Type")
+           .Filterable(true)
+           .Sortable(true);
+
+           columns.Add()
+           .Titled("Job State")
+           .Encoded(false)
+           .Sanitized(false)
+           .RenderValueAs(o => CustomRenderingOfColumn(o))
+           .Sortable(true)
+           .Css("text-center");
+
+           columns.Add()
+           .Titled("Num.of Applicants")
+           .Encoded(false)
+           .Sanitized(false)
+           .RenderValueAs(o => @<b>[@db.ApplyedJobs.Where(aj => aj.JobId == o.Id).Count()]</b>)
+            .Sortable(true)
+            .Css("text-center");
+
+            columns.Add()
+            .Titled("Num.of Matched Seekers")
+            .Encoded(false)
+            .Sanitized(false)
+            .RenderValueAs(o => @<b>[@db.SeekerRegistrations.Where(s => s.SearchOnJobTitle == o.JobCategory.JobCategoryName).Count()]</b>)
+            .Sortable(true)
+            .Css("text-center");
+
+
+           columns.Add()
+           .Titled("Actions")
+           .Encoded(false)
+           .Sanitized(false)
+           .RenderValueAs(o => CustomRenderingOfColumn2(o))
+           .Sortable(true)
+           .Css("text-center");
+
+       }).WithPaging(4).Sortable(true)
+    </div>
+
 }

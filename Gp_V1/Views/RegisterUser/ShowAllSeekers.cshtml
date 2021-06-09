@@ -1,4 +1,5 @@
 ﻿@model IEnumerable<Gp_V1.Models.SeekerRegistration>
+@using Gp_V1.Models
 @using GridMvc.Html
 @using Gp_V1.Context
 @{
@@ -18,6 +19,18 @@
 }
 else
 {
+    @helper CustomRenderingOfColumn(SeekerRegistration seeker)
+    {
+        if (seeker.IsActive == true)
+        {
+            <b class="text-success">Active</b>
+        }
+        else
+        {
+            <b class="text-danger">Block</b>
+        }
+    }
+
     <div style="width: 100%">
         @Html.Grid(Model).Columns(columns =>
         {
@@ -40,7 +53,13 @@ else
             .RenderValueAs(o => @<a href="~/Job/ShowMatchedJobs/@o.Id">[@db.Jobs.Where(j => j.JobTitle == o.SearchOnJobTitle).Count()] Jobs</a>)
             .Filterable(false);
 
-            columns.Add(c => c.IsActive).Titled("Is Active").Filterable(true);
+            columns.Add()
+            .Titled("State")
+            .Encoded(false)
+            .Sanitized(false)
+            .SetWidth(30)
+            .RenderValueAs(o => CustomRenderingOfColumn(o))
+            .Filterable(false);
 
             columns.Add()
             .Encoded(false)
@@ -60,62 +79,6 @@ else
     </div>
     <hr />
 
-    @*
-        <table class="table table-bordered table-responsive">
-            <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.Name)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Email)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.City.CityName)
-                </th>
-                <th>
-                    Searching Job Title
-                </th>
-                <th>State</th>
-                <th></th>
-            </tr>
-
-            @foreach (var item in Model)
-            {
-                <tr class="data">
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Name)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Email)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.City.CityName)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.SearchOnJobTitle)
-                    </td>
-                    @if (item.IsActive == true)
-                    {
-                        <td>
-                            <button type="button" class="btn btn-success">Active</button>
-                        </td>
-                    }
-                    else
-                    {
-                        <td>
-                            <button type="button" class="btn btn-danger">Block</button>
-
-                        </td>
-                    }
-                    <td>
-                        <button class="btn btn-info editBtn" data-id="@item.Id" data-toggle="modal" data-target="#editModal">Edit</button>
-                        @Html.ActionLink("Details", "SeekerDetails", new { id = item.Id }, new { @class = "btn btn-primary" })
-                    </td>
-                </tr>
-            }
-
-        </table>
-    *@
 }
 
 <p>
@@ -158,17 +121,17 @@ else
                         url: "/RegisterUser/EditSeeker/" + id,
                     }).done(function (data) {
                         var values = `
-                                                        <form id="editForm">
-                                                            <input type="hidden" disabled id="userId" name="Id" value="${data.Id}" />
-                                                            <div class="form-group">
-                                                                <label class="form-control-label">User State: </label>
-                                                                <select class="custom-select" id="userState" name="IsActive">
-                                                                    <option value="${data.IsActive}">${(data.IsActive == false) ? 'Block' : 'Active'}</option>
-                                                                    <option value="${!data.IsActive}">${(!data.IsActive == false) ? 'Block' : 'Active'}</option>
-                                                                </select>
-                                                            </div>
-                                                        </form>
-                                                        `
+                                                                <form id="editForm">
+                                                                    <input type="hidden" disabled id="userId" name="Id" value="${data.Id}" />
+                                                                    <div class="form-group">
+                                                                        <label class="form-control-label">User State: </label>
+                                                                        <select class="custom-select" id="userState" name="IsActive">
+                                                                            <option value="${data.IsActive}">${(data.IsActive == false) ? 'Block' : 'Active'}</option>
+                                                                            <option value="${!data.IsActive}">${(!data.IsActive == false) ? 'Block' : 'Active'}</option>
+                                                                        </select>
+                                                                    </div>
+                                                                </form>
+                                                                `
                         $(".editModal #edit-content").empty();
                         $(".editModal #edit-content").append(values);
                     });

@@ -1,10 +1,14 @@
 ﻿@model IEnumerable<Gp_V1.Models.LikedJobs>
+@using Gp_V1.Models
+@using Gp_V1.Context
+@using GridMvc.Html
 
 @{
+    MyDbContext db = new MyDbContext();
     ViewBag.Title = "Show Liked Jobs";
 }
 
-<h2 class="text-primary mb-3">Liked Jobs</h2>
+<h2 class="text-primary mb-3">Interested Jobs [@Model.Count()]</h2>
 
 <hr />
 
@@ -16,67 +20,75 @@
 }
 else
 {
-    <table class="table table-bordered table-responsive">
-        <tr>
-            <th>
-                Company Name
-            </th>
-            <th>
-                Job Title
-            </th>
-            <th>
-                Job Category
-            </th>
-            <th>
-                Job Type
-            </th>
-            <th>
-                Job Content
-            </th>
-            <th>
-                Job State
-            </th>
-            <th></th>
-        </tr>
-
-        @foreach (var item in Model)
+    @helper CustomRenderingOfColumnJobType(LikedJobs likedJobs)
+    {
+        if (likedJobs.Job.JobState == true)
         {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Job.RegisterUser.CompanyName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Job.JobTitle)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Job.JobCategory.JobCategoryName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Job.JobType.JobTypeName)
-                </td>
-                <td>
-                    @item.Job.JobDescription.Substring(0, 15) ...
-                </td>
-                @if (item.Job.JobState == true)
-                {
-                    <td>
-                        <button class="btn btn-success">Open</button>
-                    </td>
-                }
-                else
-                {
-                    <td>
-                        <button class="btn btn-danger">Closed</button>
-                    </td>
-                }
-                <td>
-                    @Html.ActionLink("Details", "Details", new { id = item.JobId }, new { @class = "btn btn-primary" })
-                    <button class="btn btn-danger deleteBtn" data-id="@item.Id">Delete</button>
-                </td>
-            </tr>
+            <b class="text-success">Open</b>
         }
+        else
+        {
+            <b class="text-danger">Close</b>
+        }
+    }
 
-    </table>
+    @helper CustomRenderingOfColumn(LikedJobs likedJobs)
+    {
+        if (Session["SeekerUser"] != null)
+        {
+            @Html.ActionLink("Details", "Details", new { id = likedJobs.JobId }, new { @class = "btn btn-primary" })
+            <button class="btn btn-danger deleteBtn" data-id="@likedJobs.Id">Delete</button>
+        }
+        else
+        {
+            @Html.ActionLink("Details", "Details", new { id = likedJobs.JobId }, new { @class = "btn btn-primary" })
+        }
+    }
+
+    <div style="width: 100%">
+        @Html.Grid(Model).Columns(columns =>
+       {
+           columns.Add(c => c.Job.JobTitle)
+           .Titled("Job Title")
+           .Filterable(true)
+           .Sortable(true);
+
+           columns.Add(c => c.Job.JobCategory.JobCategoryName)
+           .Titled("Job Category")
+           .Filterable(true)
+           .Sortable(true);
+
+           columns.Add(c => c.Job.JobType.JobTypeName)
+           .Titled("Job Type")
+           .Filterable(true)
+           .Sortable(true);
+
+           columns.Add()
+            .Titled("Num.of Applicants")
+            .Encoded(false)
+            .Sanitized(false)
+            .RenderValueAs(o => @<b class="d-block text-center">[@db.ApplyedJobs.Where(aj => aj.JobId == o.JobId).Count()]</b>)
+            .Sortable(false)
+            .Filterable(false);
+
+            columns.Add()
+            .Titled("Job State")
+            .Encoded(false)
+            .Sanitized(false)
+            .RenderValueAs(o => CustomRenderingOfColumnJobType(o))
+            .Sortable(true)
+            .Filterable(true);
+
+            columns.Add()
+            .Titled("Actions")
+            .Encoded(false)
+            .Sanitized(false)
+            .RenderValueAs(o => CustomRenderingOfColumn(o))
+            .Sortable(true)
+            .Filterable(true);
+
+        }).WithPaging(4).Sortable(true)
+    </div>
 }
 
 <hr />

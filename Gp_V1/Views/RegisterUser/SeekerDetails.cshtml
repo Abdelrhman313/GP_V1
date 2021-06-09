@@ -1,50 +1,87 @@
 ﻿@model Gp_V1.Models.SeekerRegistration
-
+@using Gp_V1.Context
 @{
+    MyDbContext db = new MyDbContext();
     ViewBag.Title = "SeekerDetails";
 }
 
 <style>
+    .first-section,
+    .second-section {
+        position: relative;
+    }
+        .first-section::before,
+        .second-section::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            top: 0px;
+            width: 4px;
+            height: 100%;
+            background-color: #ededed;
+        }
+
     .info {
         position: relative;
     }
 
-        .info .likedBtn {
+        .likedBtn {
             position: absolute;
             right: 0;
             cursor: pointer;
         }
 
-    div.info div {
+    div.info div,
+    .previous-work div,
+    .Current-work div,
+    .education-info div {
         display: flex;
         align-items: center;
         margin-bottom: 10px;
     }
 
-        div.info div span:first-of-type {
+        div.info div span:first-of-type,
+        .previous-work div span:first-of-type,
+        .Current-work div span:first-of-type,
+        .education-info div span:first-of-type {
             width: 40%;
             font-size: 17px;
             font-weight: 500;
         }
 
-            div.info div span:first-of-type::after {
+            div.info div span:first-of-type::after,
+            .previous-work div span:first-of-type::after,
+            .Current-work div span:first-of-type::after,
+            .education-info div span:first-of-type::after {
                 content: " :";
             }
+
+    .img {
+        padding-top: 100px;
+    }
 </style>
 
+<div style="position:relative">
+    @if (Session["UserName"] != null)
+    {
+        <button class="btn btn-info likedBtn" data-id="@Model.Id">
+            Like
+            <i class="fa fa-hand-o-up"></i>
+        </button>
+    }
 
-<div class="row">
-    <div class="col-md-5">
-        <div class="info pt-4">
-            @if (Session["UserName"] != null)
-            {
-                <button class="btn btn-info likedBtn" data-id="@Model.Id">
-                    Like
-                    <i class="fa fa-hand-o-up"></i>
-                </button>
-            }
-            <h2 class="text-primary mb-3">Seeker Details</h2>
-            <hr />
+    <h2 class="text-primary mb-3">Seeker Details</h2>
+</div>
+
+<hr />
+
+<div class="row first-section">
+    <div class="col-md-6">
+        <div class="info">
+
+            <h4 class="text-primary mb-3 d-inline-block" style="border-bottom: 2px solid #0094ff">Main Info</h4>
+
             <div>
                 <span>
                     Name
@@ -65,17 +102,16 @@
             </div>
             <div>
                 <span>
-                    City
+                    Address
                 </span>
 
                 <span>
-                    @Html.DisplayFor(model => model.City.CityName)
+                    @Html.DisplayFor(model => model.City.CityName) - @Html.DisplayFor(model => model.Country.CountryName)
                 </span>
             </div>
-
             <div>
                 <span>
-                    Searching Job Title
+                    Searching Job
                 </span>
 
                 <span>
@@ -90,22 +126,178 @@
                 @if (Model.IsActive == true)
                 {
                     <span>
-                        <button type="button" class="btn btn-success">Active</button>
+                        <b class="text-success">Active</b>
                     </span>
                 }
                 else
                 {
                     <span>
-                        <button type="button" class="btn btn-danger">Block</button>
+                        <b class="text-danger">Block</b>
 
                     </span>
                 }
             </div>
+            <div>
+                <span>
+                    Applied Jobs
+                </span>
+
+                <span>
+                    [@db.ApplyedJobs.Where(aj => aj.SeekerRegistrationId == Model.Id).Count()]
+                </span>
+            </div>
+            <div>
+                <span>
+                    Matched Jobs
+                </span>
+
+                <span>
+                    [@db.Jobs.Where(j => j.JobCategory.JobCategoryName == Model.SearchOnJobTitle).Count()]
+                </span>
+            </div>
         </div>
     </div>
-    <div class="col-md-7">
-        <div class="img">
-            <img src="~/Images/personal_info.png" alt="image" class="img-fluid" />
+    <div class="col-md-6">
+        <div class="education-info pl-4">
+            <h4 class="text-primary mb-3 d-inline-block" style="border-bottom: 2px solid #0094ff">Education Info</h4>
+
+            <div>
+                <span>
+                    University
+                </span>
+                <span>
+                    @Model.University.UniversityName
+                </span>
+            </div>
+            <div>
+                <span>
+                    Education Level
+                </span>
+                <span>
+                    @Model.EducationLevel.EducationLevelName
+                </span>
+            </div>
+            <div>
+                <span>
+                    Language
+                </span>
+                <span>
+                    @Model.Language.LanguageName
+                </span>
+            </div>
+            <div>
+                <span>
+                    Graduation Date
+                </span>
+                <span>
+                    @Model.GraduationDate
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<hr style="width: 60%; height:2px; background-color: #ededed; margin: 20px auto" />
+
+<div class="row second-section">
+    <div class="col-md-6">
+        <div class="previous-work">
+            <h4 class="text-primary mb-3 d-inline-block" style="border-bottom: 2px solid #0094ff">Previous Work</h4>
+            <div>
+                <span>
+                    Job Title
+                </span>
+
+                <span>
+                    @Model.JobTitle.JobTitleName
+                </span>
+            </div>
+            <div>
+                <span>
+                    Job Category
+                </span>
+
+                <span>
+                    @Model.JobCategory.JobCategoryName
+                </span>
+            </div>
+            <div>
+                <span>
+                    Company Name
+                </span>
+
+                <span>
+                    @Model.CompanyName
+                </span>
+            </div>
+            <div>
+                <span>
+                    Duration
+                </span>
+
+                <span>
+                    @Model.Duration Year
+                </span>
+            </div>
+            <div>
+                <span>
+                    Salary
+                </span>
+
+                <span>
+                    @Model.Salary$
+                </span>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="Current-work pl-4">
+            <h4 class="text-primary mb-3 d-inline-block" style="border-bottom: 2px solid #0094ff">Current Work</h4>
+            <div>
+                <span>
+                    Job Title
+                </span>
+
+                <span>
+                    @Model.CurrentJobTitle
+                </span>
+            </div>
+            <div>
+                <span>
+                    Job Category
+                </span>
+
+                <span>
+                    @Model.CurrentJobCategory
+                </span>
+            </div>
+            <div>
+                <span>
+                    Company Name
+                </span>
+
+                <span>
+                    @Model.CurrentCompanyName
+                </span>
+            </div>
+            <div>
+                <span>
+                    Duration
+                </span>
+
+                <span>
+                    @Model.CurrentDuration Year
+                </span>
+            </div>
+            <div>
+                <span>
+                    Salary
+                </span>
+
+                <span>
+                    @Model.CurrentSalary$
+                </span>
+            </div>
         </div>
     </div>
 </div>

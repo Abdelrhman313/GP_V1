@@ -7,62 +7,67 @@
 <h2 class="text-primary mb-3">Provider Details</h2>
     <hr />
 
-<div>
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.ProviderImage)
-        </dt>
+<div class="row">
+    <div class="col-md-6">
+        <dl class="dl-horizontal">
+            <dt>
+                Personal Photo
+            </dt>
 
-        <dd>
-            <img src="~/Upload/ProvidersImage/@Model.ProviderImage" alt="providerImage" class="img-fluid img-thumbnail" width="150"/>
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Email)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Email)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.CompanyName)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.CompanyName)
-        </dd>
-
-        <dt>
-            Publish Jobs
-        </dt>
-
-        <dd>
-            @Html.ActionLink("[" + Model.Jobs.Count() + "] Jobs", "GetJobInCompany", "Job", new { id = Model.Id}, new { @class = "text-dark"})
-        </dd>
-
-        <dt>State</dt>
-        @if (Model.IsActive == true)
-        {
             <dd>
-                <button class="btn btn-success">Active</button>
+                <img src="~/Upload/ProvidersImage/@Model.ProviderImage" alt="providerImage" class="img-fluid img-thumbnail" width="150" />
             </dd>
-        }
-        else
-        {
-            <dd>
-                <button class="btn btn-danger">Block</button>
-            </dd>
-        }
 
-    </dl>
+            <dt>
+                Name
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Name)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Email)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Email)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.CompanyName)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.CompanyName)
+            </dd>
+
+            <dt>
+                Publish Jobs
+            </dt>
+
+            <dd>
+                @Html.ActionLink("[" + Model.Jobs.Count() + "] Jobs", "GetJobInCompany", "Job", new { id = Model.Id }, new { @class = "text-dark" })
+            </dd>
+
+            <dt>State</dt>
+            @if (Model.IsActive == true)
+            {
+                <dd>
+                    <b class="text-success">Active</b>
+                </dd>
+            }
+            else
+            {
+                <dd>
+                    <b class="text-danger">Block</b>
+                </dd>
+            }
+
+        </dl>
+    </div>
+    <div class="col-md-6">
+        <img src="~/Images/personal_info.png" alt="image" class="img-fluid"/>    
+    </div>
 </div>
 
 <hr />

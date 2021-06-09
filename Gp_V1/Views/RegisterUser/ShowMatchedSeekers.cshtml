@@ -1,10 +1,14 @@
 ﻿@model IEnumerable<Gp_V1.Models.SeekerRegistration>
+@using Gp_V1.Models
+@using GridMvc.Html
+@using Gp_V1.Context
 
 @{
+    MyDbContext db = new MyDbContext();
     ViewBag.Title = "Show Matched Seekers";
 }
 
-<h2 class="text-primary mb-3">Matched Seekers</h2>
+<h2 class="text-primary mb-3">Matched Seekers [@Model.Count()]</h2>
 
 @using (Html.BeginForm("ShowMatchedSeekers", "RegisterUser", FormMethod.Post, new { @class = "row" }))
 {
@@ -20,44 +24,67 @@
 }
 else
 {
-    <table class="table table-responsive table-bordered">
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Email)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.City.CityName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.JobTitle)
-            </th>
-            <th></th>
-        </tr>
 
-        @foreach (var item in Model)
+    @helper CustomRenderingOfColumn2(SeekerRegistration seeker)
+    {
+        if (seeker.IsActive == true)
         {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Name)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Email)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.City.CityName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.JobTitle.JobTitleName)
-                </td>
-                <td>
-                    @Html.ActionLink("Show Profile", "SeekerDetails", new { id = item.Id }, new { @class = "btn btn-primary" })
-                </td>
-            </tr>
+            <b class="text-success">Active</b>
         }
-    </table>
+        else
+        {
+            <b class="text-danger">Block</b>
+        }
+    }
+
+    <div style="width: 100%">
+        @Html.Grid(Model).Columns(columns =>
+        {
+           columns.Add(o => o.Name)
+           .Titled("Seeker Name")
+           .Filterable(true)
+           .Sortable(true);
+
+           columns.Add(o => o.CurrentJobTitle)
+           .Titled("Current Job Title")
+           .Filterable(true)
+           .Sortable(true);
+
+
+           columns.Add()
+           .Titled("Seeker State")
+           .Encoded(false)
+           .Sanitized(false)
+           .RenderValueAs(o => CustomRenderingOfColumn2(o))
+           .Sortable(true)
+           .Css("text-center");
+
+           columns.Add()
+           .Titled("Num.of Applied Jobs")
+           .Encoded(false)
+           .Sanitized(false)
+           .RenderValueAs(o => @<b>[@db.ApplyedJobs.Where(aj => aj.SeekerRegistrationId == o.Id).Count()]</b>)
+            .Sortable(true)
+            .Css("text-center");
+
+            columns.Add()
+            .Titled("Num.of Matched Jobs")
+            .Encoded(false)
+            .Sanitized(false)
+            .RenderValueAs(o => @<b>[@db.Jobs.Where(j => j.JobCategory.JobCategoryName == o.SearchOnJobTitle).Count()]</b>)
+            .Sortable(true)
+            .Css("text-center");
+
+            columns.Add()
+            .Titled("Actions")
+            .Encoded(false)
+            .Sanitized(false)
+            .RenderValueAs(o => @Html.ActionLink("Show Profile", "SeekerDetails", new { id = o.Id }, new { @class = "btn btn-primary" }))
+            .Sortable(false)
+            .Css("text-center");
+        }).WithPaging(4).Sortable(true)
+    </div>
+
 }
 
 <hr />

@@ -480,7 +480,7 @@ namespace Gp_V1.Controllers
         {
             var seeker = db.SeekerRegistrations.Where(s => s.Id == id).SingleOrDefault();
 
-            if (Session["SeekerUser"] != null || Session["UserName"] != null)
+            if (Session["SeekerUser"] != null || Session["UserName"] != null && id > 0)
             {
                 if (seeker != null)
                 {

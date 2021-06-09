@@ -26,11 +26,12 @@ else
         var totalUsers = db.SeekerRegistrations.Where(s => s.Nationality.NationalityName == nationality.NationalityName).Count();
         if (totalUsers == 0)
         {
+            <button class="btn btn-info editBtn mr-1" data-id="@nationality.Id" data-toggle="modal" data-target="#editModal">Edit</button>
             <button class="btn btn-danger deleteBtn" data-id="@nationality.Id">Delete</button>
         }
         else
         {
-            <b></b>
+            <button class="btn btn-info editBtn mr-1" data-id="@nationality.Id" data-toggle="modal" data-target="#editModal">Edit</button>
         }
     }
 
@@ -50,18 +51,13 @@ else
             .Filterable(false);
 
             columns.Add()
-            .Encoded(false)
-            .Sanitized(false)
-            .RenderValueAs(o => @<button class="btn btn-info editBtn" data-id="@o.Id" data-toggle="modal" data-target="#editModal">Edit</button>)
-            .Filterable(false);
-
-            columns.Add()
+            .Titled("Actions")
             .Encoded(false)
             .Sanitized(false)
             .RenderValueAs(o => CustomRenderingOfColumn(o))
             .Sortable(true);
 
-        }).WithPaging(4).Sortable(true)
+            }).WithPaging(4).Sortable(true)
     </div>
 
     <hr />
@@ -187,14 +183,14 @@ else
                         url: "/Nationality/Edit/" + id,
                     }).done(function (data) {
                         var values = `
-                                                <form id="editForm">
-                                                    <input type="hidden" id="nationalityId" value="${data.Id}" />
-                                                    <div class="form-group">
-                                                        <label for="nationalityName" class="form-control-label">City Name:</label>
-                                                        <input type="text" class="form-control" id="nationalityName" name="NationalityName" value="${data.NationalityName}">
-                                                    </div>
-                                                </form>
-                                                `
+                                                    <form id="editForm">
+                                                        <input type="hidden" id="nationalityId" value="${data.Id}" />
+                                                        <div class="form-group">
+                                                            <label for="nationalityName" class="form-control-label">City Name:</label>
+                                                            <input type="text" class="form-control" id="nationalityName" name="NationalityName" value="${data.NationalityName}">
+                                                        </div>
+                                                    </form>
+                                                    `
                         $(".editModal #edit-content").empty();
                         $(".editModal #edit-content").append(values);
                     });

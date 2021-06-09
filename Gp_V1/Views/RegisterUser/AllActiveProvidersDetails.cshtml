@@ -32,7 +32,13 @@
         .RenderValueAs(o => @<b>[@db.ApplyedJobs.Where(a => a.Job.RegisterUserId == o.Id).Count()]</b>)
         .Filterable(false);
 
-        columns.Add(c => c.IsActive).Titled("Is Active").Filterable(true);
+        columns.Add()
+        .Titled("User State")
+        .Encoded(false)
+        .Sanitized(false)
+        .SetWidth(30)
+        .RenderValueAs(o => @<b class="text-success">Active</b>)
+        .Filterable(false);
 
         columns.Add()
         .Encoded(false)
