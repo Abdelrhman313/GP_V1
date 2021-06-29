@@ -69,6 +69,9 @@ namespace Gp_V1.Models
         [Display(Name = "What Is Your Favourite Team?")]
         public string SecurityQuestion { get; set; }
 
+        [Display(Name = "CV")]
+        public string SeekerCV { get; set; }
+
         /* Previous Work */
         public string CompanyName { get; set; }
         public int Salary { get; set; }

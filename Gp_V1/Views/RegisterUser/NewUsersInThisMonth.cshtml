@@ -1,5 +1,6 @@
 ﻿@model Gp_V1.Models.SeekerProviderViewModel
-
+@using GridMvc.Html
+@using Gp_V1.Models
 @{
     ViewBag.Title = "New Users In This Month";
 }
@@ -17,42 +18,63 @@
 }
 else
 {
-    <table class="table table-bordered table-responsive">
-        <tr>
-            <th>Provider Photo</th>
-            <th>Provider Name</th>
-            <th>Company Name</th>
-            <th>Publish Jobs</th>
-            <th>Registration Date</th>
-            <th>State</th>
-            <th></th>
-        </tr>
-        @foreach (var provider in Model.RegisterUsers)
+
+    @helper CustomRenderingOfColumn(RegisterUser registerUser)
+    {
+        if (registerUser.IsActive == true)
         {
-            <tr>
-                <td>
-                    <img src="~/Upload/ProvidersImage/@provider.ProviderImage" alt="provider Image" class="img-fluid img-thumbnail" style="width:100px;height:100px" />
-                </td>
-                <td>@provider.Name</td>
-                <td>@provider.CompanyName</td>
-                <td>@provider.Jobs.Count()</td>
-                <td>@provider.RegistrationDate</td>
-                <td>
-                    @if (provider.IsActive == true)
-                    {
-                        <button class="btn btn-success">Active</button>
-                    }
-                    else
-                    {
-                        <button class="btn btn-danger">Blocked</button>
-                    }
-                </td>
-                <td>
-                    @Html.ActionLink("Show Details", "UserDetails", "RegisterUser", new { id = provider.Id }, new { @class="btn btn-primary" })
-                </td>
-            </tr>
+            <b class="text-success">Active</b>
         }
-    </table>
+        else
+        {
+            <b class="text-danger">block</b>
+        }
+    }
+
+    <div style="width: 100% ;margin-bottom: 40px">
+        @Html.Grid(Model.RegisterUsers).Columns(columns =>
+        {
+           columns.Add(o => o.Name)
+           .Titled("Name")
+           .Filterable(true)
+           .Sortable(true);
+
+           columns.Add(o => o.CompanyName)
+           .Titled("Campany Name")
+           .Filterable(true)
+           .Sortable(true);
+
+           columns.Add()
+           .Titled("Publish Jobs")
+           .Encoded(false)
+           .Sanitized(false)
+           .RenderValueAs(o => @<a href="~/Job/GetJobInCompany/@Convert.ToInt32(o.Id)">[ @o.Jobs.Count() ]</a>)
+.Filterable(true)
+.Sortable(true);
+
+columns.Add()
+.Titled("State")
+.Encoded(false)
+.Sanitized(false)
+.RenderValueAs(a => CustomRenderingOfColumn(a))
+.Filterable(false)
+.Sortable(false);
+
+columns.Add(o => o.RegistrationDate)
+.Titled("Registration Date")
+.Filterable(true)
+.Sortable(true);
+
+columns.Add()
+.Titled("Actions")
+.Encoded(false)
+.Sanitized(false)
+.RenderValueAs(a => Html.ActionLink("Show Details", "UserDetails", "RegisterUser", new { id = a.Id }, new { @class = "btn btn-primary" }))
+.Filterable(false)
+.Sortable(false);
+
+}).WithPaging(4).Sortable(true)
+    </div>
 }
 
 <h4 class="text-dark d-inline-block mb-3" style="border-bottom: 2px solid #444;">Seekers</h4>
@@ -64,47 +86,65 @@ else
 }
 else
 {
-    <table class="table table-bordered table-responsive">
-        <tr>
-            <th>Seeker Photo</th>
-            <th>Seeker Name</th>
-            <th>Seeker E-mail</th>
-            <th>Search on Job Title</th>
-            <th>Registration Date</th>
-            <th>State</th>
-            <th></th>
-        </tr>
-        @foreach (var seeker in Model.SeekerRegistrations)
-        {
-    <tr>
-        <td>
-            <img src="~/Upload/SeekersImage/@seeker.SeekerImage" alt="seeker Image" class="img-fluid img-thumbnail" style="width:100px;height:100px" />
-        </td>
-        <td>@seeker.Name</td>
-        <td>@seeker.Email</td>
-        <td>@seeker.SearchOnJobTitle</td>
-        <td>@seeker.RegistrationDate</td>
-        <td>
-            @if (seeker.IsActive == true)
-            {
-                <button class="btn btn-success">Active</button>
-            }
-            else
-            {
-                <button class="btn btn-danger">Blocked</button>
-            }
-        </td>
 
-        <td>
-            @Html.ActionLink("Show Details", "SeekerDetails", "RegisterUser", new { id = seeker.Id }, new { @class = "btn btn-primary" })
-        </td>
-    </tr>
+    @helper CustomRenderingOfColumn2(SeekerRegistration seeker)
+    {
+        if (seeker.IsActive == true)
+        {
+            <b class="text-success">Active</b>
         }
-    </table>
+        else
+        {
+            <b class="text-danger">block</b>
+        }
+    }
+
+    <div style="width: 100% ;margin-bottom: 40px">
+        @Html.Grid(Model.SeekerRegistrations).Columns(columns =>
+        {
+           columns.Add(o => o.Name)
+           .Titled("Name")
+           .Filterable(true)
+           .Sortable(true);
+
+           columns.Add(o => o.Email)
+           .Titled("E-mail")
+           .Filterable(true)
+           .Sortable(true);
+
+           columns.Add(o => o.SearchOnJobTitle)
+           .Titled("Search On Job Title")
+           .Filterable(true)
+           .Sortable(true);
+
+           columns.Add()
+           .Titled("State")
+           .Encoded(false)
+           .Sanitized(false)
+           .RenderValueAs(a => CustomRenderingOfColumn2(a))
+           .Filterable(false)
+           .Sortable(false);
+
+           columns.Add(o => o.RegistrationDate)
+           .Titled("Registration Date")
+           .Filterable(true)
+           .Sortable(true);
+
+           columns.Add()
+           .Titled("Actions")
+           .Encoded(false)
+           .Sanitized(false)
+           .RenderValueAs(a => Html.ActionLink("Show Details", "SeekerDetails", "RegisterUser", new { id = a.Id }, new { @class = "btn btn-primary" }))
+           .Filterable(false)
+           .Sortable(false);
+
+        }).WithPaging(4).Sortable(true)
+    </div>
+            
 }
 
 <hr />
 
 <p>
-    @Html.ActionLink("Back To Dashboard","Index", "AdminViewModel", null, new { @class="btn btn-dark"})
+    @Html.ActionLink("Back To Dashboard", "Index", "AdminViewModel", null, new { @class = "btn btn-dark" })
 </p>

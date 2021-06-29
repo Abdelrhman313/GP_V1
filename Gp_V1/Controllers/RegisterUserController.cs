@@ -386,7 +386,7 @@ namespace Gp_V1.Controllers
             }
         }
         [HttpPost]
-        public ActionResult SeekerRegister(SeekerRegistration seekerRegistration, HttpPostedFileBase seekerPhoto)
+        public ActionResult SeekerRegister(SeekerRegistration seekerRegistration, HttpPostedFileBase seekerPhoto, HttpPostedFileBase seekerCv)
         {
             if (ModelState.IsValid)
             {
@@ -412,6 +412,10 @@ namespace Gp_V1.Controllers
                     string path = Path.Combine(Server.MapPath("~/Upload/SeekersImage"), seekerPhoto.FileName);
                     seekerPhoto.SaveAs(path);
                     seekerRegistration.SeekerImage = seekerPhoto.FileName;
+
+                    string path2 = Path.Combine(Server.MapPath("~/Upload/SeekersCv"), seekerCv.FileName);
+                    seekerCv.SaveAs(path2);
+                    seekerRegistration.SeekerCV = seekerCv.FileName;
 
                     seekerRegistration.RegistrationDate = DateTime.Now;
                     seekerRegistration.IsActive = true;
@@ -523,7 +527,7 @@ namespace Gp_V1.Controllers
             return View();
         }
         [HttpPost]
-        public ActionResult EditSeekerProfile(SeekerRegistration seekerRegistration, HttpPostedFileBase seekerPhoto)
+        public ActionResult EditSeekerProfile(SeekerRegistration seekerRegistration, HttpPostedFileBase seekerPhoto, HttpPostedFileBase seekerCv)
         {
             if (seekerRegistration != null)
             {
@@ -536,6 +540,15 @@ namespace Gp_V1.Controllers
                     seekerPhoto.SaveAs(path);
                     seeker.SeekerImage = seekerPhoto.FileName;
                 }
+                if (seekerCv != null)
+                {
+                    var oldCv = Path.Combine(Server.MapPath("~/Upload/SeekersCv"), seeker.SeekerCV);
+                    System.IO.File.Delete(oldCv);
+                    string path = Path.Combine(Server.MapPath("~/Upload/SeekersCv"), seekerCv.FileName);
+                    seekerCv.SaveAs(path);
+                    seeker.SeekerCV = seekerCv.FileName;
+                }
+
                 // Personal Info
                 seeker.Email = seekerRegistration.Email;
                 seeker.Gender = seekerRegistration.Gender;
@@ -613,7 +626,7 @@ namespace Gp_V1.Controllers
             }
             else
             {
-                return RedirectToAction("Login For All");
+                return RedirectToAction("LoginForAll");
             }
         }
         

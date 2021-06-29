@@ -210,6 +210,10 @@
     <Compile Include="Migrations\202105251445005_editSeekerRegistrationtableAddedNewColumns.Designer.cs">
       <DependentUpon>202105251445005_editSeekerRegistrationtableAddedNewColumns.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202106291527317_addpropseekercv.cs" />
+    <Compile Include="Migrations\202106291527317_addpropseekercv.Designer.cs">
+      <DependentUpon>202106291527317_addpropseekercv.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Admin.cs" />
     <Compile Include="Models\AdminViewModel.cs" />
@@ -282,6 +286,7 @@
     <Folder Include="App_Data\" />
     <Folder Include="Upload\PostsImage\" />
     <Folder Include="Upload\ProvidersImage\" />
+    <Folder Include="Upload\SeekersCv\" />
     <Folder Include="Upload\SeekersImage\" />
   </ItemGroup>
   <ItemGroup>
@@ -386,6 +391,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202105251445005_editSeekerRegistrationtableAddedNewColumns.resx">
       <DependentUpon>202105251445005_editSeekerRegistrationtableAddedNewColumns.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202106291527317_addpropseekercv.resx">
+      <DependentUpon>202106291527317_addpropseekercv.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

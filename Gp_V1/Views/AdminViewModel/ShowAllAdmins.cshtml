@@ -1,4 +1,5 @@
 ﻿@model IEnumerable<Gp_V1.Models.Admin>
+@using Gp_V1.Models
 @using GridMvc.Html
 @{
     ViewBag.Title = "All Admins";
@@ -6,10 +7,23 @@
 
 <h2 class="text-primary mb-3">All Admins [@Model.Count()]</h2>
 
-<p>
-    @Html.ActionLink("Add New Admin", "AddNewAdmin", null, new { @class = "btn btn-success" })
-</p>
+@if (Session["AdminUser"].ToString() == "Abdelrhman") { 
+    <p>
+        @Html.ActionLink("Add New Admin", "AddNewAdmin", null, new { @class = "btn btn-success" })
+    </p>
+}
 
+@helper CustomRenderingOfColumn(Admin admin)
+{
+    if (Session["AdminUser"].ToString() == "Abdelrhman")
+    {
+        @Html.ActionLink("Delete", "Delete", new { id = admin.Id }, new { @class = "btn btn-danger" })
+    }
+    else
+    {
+        <b>-----</b>
+    }
+}
 
 <div style="width: 100%">
     @Html.Grid(Model).Columns(columns =>
@@ -28,7 +42,7 @@
     .Titled("Actions")
     .Encoded(false)
     .Sanitized(false)
-    .RenderValueAs(a => Html.ActionLink("Delete", "Delete", new { id = a.Id }, new { @class = "btn btn-danger" }))
+    .RenderValueAs(a => CustomRenderingOfColumn(a))
     .Filterable(false)
     .Sortable(false);
 

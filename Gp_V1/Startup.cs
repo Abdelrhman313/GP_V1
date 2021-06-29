@@ -14,6 +14,7 @@ namespace Gp_V1
         public void Configuration(IAppBuilder app)
         {
             MyDbContext db = new MyDbContext();
+            db.Database.CommandTimeout = 5000;
             if (!db.Admins.Any(a=>a.Name == "Abdelrhman"))
             {
                 db.Admins.Add(new Models.Admin { Id = 1, Name = "Abdelrhman", Email = "abdelrhman44@gmail.com", Password = "01128479486" });
