@@ -48,53 +48,53 @@ else
         }
     }
 
-    <div style="width: 100%">
-        @Html.Grid(Model).Columns(columns =>
-       {
-           columns.Add(o => o.JobTitle)
-           .Titled("Job Title")
-           .Filterable(true)
-           .Sortable(true);
+<div style="width: 100%">
+    @Html.Grid(Model).Columns(columns =>
+   {
+       columns.Add(o => o.JobTitle)
+       .Titled("Job Title")
+       .Filterable(true)
+       .Sortable(true);
 
-           columns.Add(o => o.JobType.JobTypeName)
-           .Titled("Job Type")
-           .Filterable(true)
-           .Sortable(true);
+       columns.Add(o => o.JobType.JobTypeName)
+       .Titled("Job Type")
+       .Filterable(true)
+       .Sortable(true);
 
-           columns.Add()
-           .Titled("Job State")
-           .Encoded(false)
-           .Sanitized(false)
-           .RenderValueAs(o => CustomRenderingOfColumn(o))
-           .Sortable(true)
-           .Css("text-center");
+       columns.Add()
+       .Titled("Job State")
+       .Encoded(false)
+       .Sanitized(false)
+       .RenderValueAs(o => CustomRenderingOfColumn(o))
+       .Sortable(true)
+       .Css("text-center");
 
-           columns.Add()
-           .Titled("Num.of Applicants")
-           .Encoded(false)
-           .Sanitized(false)
-           .RenderValueAs(o => @<b>[@db.ApplyedJobs.Where(aj => aj.JobId == o.Id).Count()]</b>)
-            .Sortable(true)
-            .Css("text-center");
+       columns.Add()
+       .Titled("Num.of Applicants")
+       .Encoded(false)
+       .Sanitized(false)
+       .RenderValueAs(o => @<a href="~/Job/ShowApplyersForEachJob">[@db.ApplyedJobs.Where(aj => aj.JobId == o.Id).Count()]</a>)
+.Sortable(true)
+.Css("text-center");
 
-            columns.Add()
-            .Titled("Num.of Matched Seekers")
-            .Encoded(false)
-            .Sanitized(false)
-            .RenderValueAs(o => @<b>[@db.SeekerRegistrations.Where(s => s.SearchOnJobTitle == o.JobCategory.JobCategoryName).Count()]</b>)
-            .Sortable(true)
-            .Css("text-center");
+columns.Add()
+.Titled("Num.of Matched Seekers")
+.Encoded(false)
+.Sanitized(false)
+.RenderValueAs(o => @<a href="~/RegisterUser/ShowMatchedSeekers">[@db.SeekerRegistrations.Where(s => s.SearchOnJobTitle == o.JobCategory.JobCategoryName).Count()]</a>)
+.Sortable(true)
+.Css("text-center");
 
 
-           columns.Add()
-           .Titled("Actions")
-           .Encoded(false)
-           .Sanitized(false)
-           .RenderValueAs(o => CustomRenderingOfColumn2(o))
-           .Sortable(true)
-           .Css("text-center");
+columns.Add()
+.Titled("Actions")
+.Encoded(false)
+.Sanitized(false)
+.RenderValueAs(o => CustomRenderingOfColumn2(o))
+.Sortable(true)
+.Css("text-center");
 
-       }).WithPaging(4).Sortable(true)
-    </div>
+}).WithPaging(4).Sortable(true)
+</div>
 
 }

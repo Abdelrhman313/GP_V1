@@ -102,10 +102,27 @@
 
 <h2 class="text-primary mb-3">Jobs [@ViewBag.JobsCount]</h2>
 
+<div id="errMsg" class="alert alert-danger" style="display: none">
+    Please Select Search By ... From Select Box
+</div>
+
 @using (Html.BeginForm("Index", "Job", FormMethod.Post, new { @class = "row" }))
 {
-    @Html.TextBox("searchName", null, new { @class = "col-md-9 col-8 ml-3 mr-2 form-control", placeholder = "Write Job Title.." })
-    <button type="submit" class="btn btn-info col-md-2 col-3">Search</button>
+    <div class="form-group col-12 d-flex align-items-center mb-2">
+        <select id="selectInput" class="custom-select" name="searchVector" required>
+            <option value="default" disabled selected>Search By</option>
+            <option value="JobCategory.JobCategoryName">Job Category</option>
+            <option value="JobTitle">Job Title</option>
+            <option value="JobType.JobTypeName">Job Type</option>
+            <option value="City.CityName">City</option>
+            <option value="Country.CountryName">Country</option>
+            <option value="CareerLevel">Career Level</option>
+        </select>
+
+        @Html.TextBox("searchName", null, new { @class = "col-md-8 col-8 ml-3 mr-2 form-control", placeholder = "Search For Jobs.." })
+
+        <button id="searchBtn" type="submit" class="btn btn-info col-md-2 col-3">Search</button>
+    </div>
 }
 
 @if (ViewBag.SeekerState == false)
@@ -123,6 +140,7 @@
 }
 
 <hr />
+
 @if (Session["UserName"] != null && ViewBag.UserState == true)
 {
     <p>
@@ -205,6 +223,14 @@
 @section scripts{
     <script>
         $(() => {
+
+            $("#searchBtn").click(() => {
+                if ($("#selectInput").val() == null) {
+                    $("#errMsg").fadeIn(500);
+                    return false;
+                }
+            });
+
             allApplyBtns = $(".applyBtn");
             [...allApplyBtns].forEach(btn => {
                 $(btn).on("click", () => {

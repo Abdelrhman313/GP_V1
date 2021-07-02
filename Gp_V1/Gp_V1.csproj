@@ -170,49 +170,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\202105021255559_CreateDatabase.cs" />
-    <Compile Include="Migrations\202105021255559_CreateDatabase.Designer.cs">
-      <DependentUpon>202105021255559_CreateDatabase.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202105021614073_updateEducationTable.cs" />
-    <Compile Include="Migrations\202105021614073_updateEducationTable.Designer.cs">
-      <DependentUpon>202105021614073_updateEducationTable.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202105021618252_updateEducationTable2.cs" />
-    <Compile Include="Migrations\202105021618252_updateEducationTable2.Designer.cs">
-      <DependentUpon>202105021618252_updateEducationTable2.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202105021624119_updateEducationTable3.cs" />
-    <Compile Include="Migrations\202105021624119_updateEducationTable3.Designer.cs">
-      <DependentUpon>202105021624119_updateEducationTable3.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202105030210421_editEducationTable.cs" />
-    <Compile Include="Migrations\202105030210421_editEducationTable.Designer.cs">
-      <DependentUpon>202105030210421_editEducationTable.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202105031745146_EditTables.cs" />
-    <Compile Include="Migrations\202105031745146_EditTables.Designer.cs">
-      <DependentUpon>202105031745146_EditTables.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202105171503099_EditSeekerRegistration.cs" />
-    <Compile Include="Migrations\202105171503099_EditSeekerRegistration.Designer.cs">
-      <DependentUpon>202105171503099_EditSeekerRegistration.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202105171537544_EditSeekerRegistrationTable2.cs" />
-    <Compile Include="Migrations\202105171537544_EditSeekerRegistrationTable2.Designer.cs">
-      <DependentUpon>202105171537544_EditSeekerRegistrationTable2.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202105201242435_editUsersTables.cs" />
-    <Compile Include="Migrations\202105201242435_editUsersTables.Designer.cs">
-      <DependentUpon>202105201242435_editUsersTables.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202105251445005_editSeekerRegistrationtableAddedNewColumns.cs" />
-    <Compile Include="Migrations\202105251445005_editSeekerRegistrationtableAddedNewColumns.Designer.cs">
-      <DependentUpon>202105251445005_editSeekerRegistrationtableAddedNewColumns.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202106291527317_addpropseekercv.cs" />
-    <Compile Include="Migrations\202106291527317_addpropseekercv.Designer.cs">
-      <DependentUpon>202106291527317_addpropseekercv.cs</DependentUpon>
+    <Compile Include="Migrations\202107021248458_initial-migration.cs" />
+    <Compile Include="Migrations\202107021248458_initial-migration.Designer.cs">
+      <DependentUpon>202107021248458_initial-migration.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Admin.cs" />
@@ -362,38 +322,8 @@
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\202105021255559_CreateDatabase.resx">
-      <DependentUpon>202105021255559_CreateDatabase.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202105021614073_updateEducationTable.resx">
-      <DependentUpon>202105021614073_updateEducationTable.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202105021618252_updateEducationTable2.resx">
-      <DependentUpon>202105021618252_updateEducationTable2.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202105021624119_updateEducationTable3.resx">
-      <DependentUpon>202105021624119_updateEducationTable3.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202105030210421_editEducationTable.resx">
-      <DependentUpon>202105030210421_editEducationTable.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202105031745146_EditTables.resx">
-      <DependentUpon>202105031745146_EditTables.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202105171503099_EditSeekerRegistration.resx">
-      <DependentUpon>202105171503099_EditSeekerRegistration.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202105171537544_EditSeekerRegistrationTable2.resx">
-      <DependentUpon>202105171537544_EditSeekerRegistrationTable2.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202105201242435_editUsersTables.resx">
-      <DependentUpon>202105201242435_editUsersTables.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202105251445005_editSeekerRegistrationtableAddedNewColumns.resx">
-      <DependentUpon>202105251445005_editSeekerRegistrationtableAddedNewColumns.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202106291527317_addpropseekercv.resx">
-      <DependentUpon>202106291527317_addpropseekercv.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202107021248458_initial-migration.resx">
+      <DependentUpon>202107021248458_initial-migration.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

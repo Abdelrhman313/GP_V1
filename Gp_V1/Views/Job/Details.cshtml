@@ -129,8 +129,8 @@
 <p>
     @if (Session["UserName"] != null)
     {
-        @Html.ActionLink("Edit", "Edit", new { id = Model.Id }, new { @class = "btn btn-info mr-1" })
-        @Html.ActionLink("Back to List", "ShowPublishedJobs", null, new { @class = "btn btn-dark" })
+       @* @Html.ActionLink("Edit", "Edit", new { id = Model.Id }, new { @class = "btn btn-info mr-1" })*@
+        @Html.ActionLink("Back to Jobs", "Index", null, new { @class = "btn btn-dark" })
     }
     else
     {

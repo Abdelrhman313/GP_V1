@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.Linq;
@@ -39,7 +38,7 @@ namespace Gp_V1.Controllers
 
         // Search: job
         [HttpPost]
-        public ActionResult Index(string searchName)
+        public ActionResult Index(string searchName, string searchVector)
         {
             var jobs = db.Jobs.Include(j => j.City);
 
@@ -50,10 +49,44 @@ namespace Gp_V1.Controllers
             }
             else
             {
-                var matchedJobs = jobs.Where(j => j.JobTitle.ToLower().StartsWith(searchName.ToLower())).ToList();
-                ViewBag.JobsCount = matchedJobs.Count();
-                return View(matchedJobs);
+                if (searchVector == "JobTitle")
+                {
+                    var matchedJobs = jobs.Where(j => j.JobTitle.ToLower().StartsWith(searchName.ToLower())).ToList();
+                    ViewBag.JobsCount = matchedJobs.Count();
+                    return View(matchedJobs);
+                }
+                if (searchVector == "JobCategory.JobCategoryName")
+                {
+                    var matchedJobs = jobs.Where(j => j.JobCategory.JobCategoryName.ToLower().StartsWith(searchName.ToLower())).ToList();
+                    ViewBag.JobsCount = matchedJobs.Count();
+                    return View(matchedJobs);
+                }
+                if (searchVector == "JobType.JobTypeName")
+                {
+                    var matchedJobs = jobs.Where(j => j.JobType.JobTypeName.ToLower().StartsWith(searchName.ToLower())).ToList();
+                    ViewBag.JobsCount = matchedJobs.Count();
+                    return View(matchedJobs);
+                }
+                if (searchVector == "City.CityName")
+                {
+                    var matchedJobs = jobs.Where(j => j.City.CityName.ToLower().StartsWith(searchName.ToLower())).ToList();
+                    ViewBag.JobsCount = matchedJobs.Count();
+                    return View(matchedJobs);
+                }
+                if (searchVector == "Country.CountryName")
+                {
+                    var matchedJobs = jobs.Where(j => j.JobTitle.ToLower().StartsWith(searchName.ToLower())).ToList();
+                    ViewBag.JobsCount = matchedJobs.Count();
+                    return View(matchedJobs);
+                }
+                if (searchVector == "CareerLevel")
+                {
+                    var matchedJobs = jobs.Where(j => j.CareerLevel.ToLower().StartsWith(searchName.ToLower())).ToList();
+                    ViewBag.JobsCount = matchedJobs.Count();
+                    return View(matchedJobs);
+                }
             }
+            return View();
         }
 
 
@@ -263,7 +296,7 @@ namespace Gp_V1.Controllers
         }
 
         public ActionResult ShowApplyedJobs(int? id){
-            if (Session["SeekerId"] != null || Session["AdminUser"] != null) { 
+            if (Session["SeekerId"] != null || Session["AdminUser"] != null || Session["UserName"] != null) { 
                 var seekerId = Convert.ToInt32(Session["SeekerId"]);
                 var applyedJobs = db.ApplyedJobs.Where(aj => aj.SeekerRegistrationId == seekerId || aj.SeekerRegistrationId == id).ToList();
                 return View(applyedJobs);
@@ -387,7 +420,7 @@ namespace Gp_V1.Controllers
 
         public ActionResult ShowMatchedJobs(int? id)
         {
-            if(Session["SeekerUser"] != null || Session["AdminUser"] != null)
+            if(Session["SeekerUser"] != null || Session["AdminUser"] != null || Session["UserName"] != null)
             {
                 var seekerId = Convert.ToInt32(Session["SeekerId"]);
                 var seeker = db.SeekerRegistrations.Where(s => s.Id == seekerId || s.Id == id).FirstOrDefault();
@@ -548,7 +581,6 @@ namespace Gp_V1.Controllers
                 return Json(new { result = 0 }, JsonRequestBehavior.AllowGet);
             }
         }
-    
         public JsonResult EditJobState(int id)
         {
             Job job = db.Jobs.Where(j => j.Id == id).FirstOrDefault();
