@@ -15,6 +15,7 @@ namespace Gp_V1.Controllers
         {
             HomeViewModel HVM = new HomeViewModel
             {
+                Countries = db.Countries.ToList(),
                 Cities = db.Cities.ToList(),
                 RegisterUsers = db.RegisterUsers.ToList(),
                 Jobs = db.Jobs.ToList()

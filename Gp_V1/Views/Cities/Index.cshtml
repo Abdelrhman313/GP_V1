@@ -88,6 +88,10 @@ else
                 <div id="errDiv" class="alert alert-danger" style="display: none">Please Fill All Input To Create New Category!</div>
                 <form id="createForm">
                     <div class="form-group">
+                        <label for="CityName" class="form-control-label">County Name:</label>
+                        @Html.DropDownList("CountryId", null, new { @class = "form-control", id = "CountryId" })
+                    </div>
+                    <div class="form-group">
                         <label for="CityName" class="form-control-label">City Name:</label>
                         <input type="text" class="form-control" id="CityName" name="CityName">
                     </div>
@@ -190,14 +194,15 @@ else
                         url: "/Cities/Edit/" + id,
                     }).done(function (data) {
                         var values = `
-                                                                                <form id="editForm">
-                                                                                    <input type="hidden" id="cityId" value="${data.Id}" />
-                                                                                    <div class="form-group">
-                                                                                        <label for="cityName" class="form-control-label">City Name:</label>
-                                                                                        <input type="text" class="form-control" id="cityName" name="CityName" value="${data.CityName}">
-                                                                                    </div>
-                                                                                </form>
-                                                                                `
+                        <form id="editForm">
+                            <input type="hidden" id="cityId" value="${data.Id}" />
+                            <input type="hidden" id="countryId" value="${data.CountryId}" />
+                            <div class="form-group">
+                                <label for="cityName" class="form-control-label">City Name:</label>
+                                <input type="text" class="form-control" id="cityName" name="CityName" value="${data.CityName}">
+                            </div>
+                        </form>
+                        `
                         $(".editModal #edit-content").empty();
                         $(".editModal #edit-content").append(values);
                     });
@@ -207,7 +212,8 @@ else
             $("#editBtn").click(() => {
                 editCityName = $("#cityName").val(),
                     cityId = $("#cityId").val(),
-                    editFormData = { Id: cityId, CityName: editCityName };
+                    countryId = $("#countryId").val(),
+                    editFormData = { Id: cityId, CityName: editCityName, CountryId: countryId };
                 $.ajax({
                     type: "POST",
                     url: "/Cities/Edit",

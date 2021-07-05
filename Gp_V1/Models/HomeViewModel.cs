@@ -7,6 +7,7 @@ namespace Gp_V1.Models
 {
     public class HomeViewModel
     {
+        public IEnumerable<Country> Countries { get; set; }
         public IEnumerable<City> Cities { get; set; }
         public IEnumerable<Job> Jobs { get; set; }
         public IEnumerable<RegisterUser> RegisterUsers { get; set; }

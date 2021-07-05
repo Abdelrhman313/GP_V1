@@ -20,6 +20,7 @@ namespace Gp_V1.Controllers
         {
             if (Session["AdminUser"] != null && Session["UserName"] == null && Session["SeekerUser"] == null)
             {
+                ViewBag.CountryId = new SelectList(db.Countries, "Id", "CountryName");
                 return View(db.Cities.ToList());
             }
             else

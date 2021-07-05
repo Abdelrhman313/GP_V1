@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.Linq;
@@ -116,7 +117,7 @@ namespace Gp_V1.Controllers
         {
             if (Session["UserName"] != null && Session["UserId"] != null)
             {
-                ViewBag.CityId = new SelectList(db.Cities, "Id", "CityName");
+                //ViewBag.CityId = new SelectList(db.Cities, "Id", "CityName");
                 ViewBag.CountryId = new SelectList(db.Countries, "Id", "CountryName");
                 ViewBag.JobTypeId = new SelectList(db.JobTypes, "Id", "JobTypeName");
                 ViewBag.JobCategoryId = new SelectList(db.JobCategories, "Id", "JobCategoryName");
@@ -146,11 +147,18 @@ namespace Gp_V1.Controllers
                 return RedirectToAction("ShowPublishedJobs");
             }
 
-            ViewBag.CityId = new SelectList(db.Cities, "Id", "CityName");
+            //ViewBag.CityId = new SelectList(db.Cities, "Id", "CityName");
             ViewBag.CountryId = new SelectList(db.Countries, "Id", "CountryName");
             ViewBag.JobTypeId = new SelectList(db.JobTypes, "Id", "JobTypeName");
             ViewBag.JobCategoryId = new SelectList(db.JobCategories, "Id", "JobCategoryName");
             return View(job);
+        }
+
+        public JsonResult GetCitiesInCountry(int CountryId)
+        {
+            db.Configuration.ProxyCreationEnabled = false;
+            List<City> cities = db.Cities.Where(c => c.CountryId == CountryId).ToList();
+            return Json(cities, JsonRequestBehavior.AllowGet);
         }
 
         // GET: Job/Edit/5
@@ -167,7 +175,7 @@ namespace Gp_V1.Controllers
                 {
                     return HttpNotFound();
                 }
-                ViewBag.CityId = new SelectList(db.Cities, "Id", "CityName", job.CityId);
+                //ViewBag.CityId = new SelectList(db.Cities, "Id", "CityName", job.CityId);
                 ViewBag.CountryId = new SelectList(db.Countries, "Id", "CountryName", job.CountryId);
                 ViewBag.JobTypeId = new SelectList(db.JobTypes, "Id", "JobTypeName", job.JobTypeId);
                 ViewBag.JobCategoryId = new SelectList(db.JobCategories, "Id", "JobCategoryName", job.JobCategoryId);
@@ -266,10 +274,24 @@ namespace Gp_V1.Controllers
         /************ Seeker ***************/
         public JsonResult ApplyJob(int id)
         {
-            if (Session["SeekerId"] != null)
+            if (Session["SeekerId"] != null && Session["SeekerUser"] != null)
             {
                 var SeekerId = Convert.ToInt32(Session["SeekerId"]);
                 var JobId = id;
+
+                var seeker = db.SeekerRegistrations.Find(SeekerId);
+                var job = db.Jobs.Find(JobId);
+
+                if(seeker.IsActive == false)
+                {
+                    return Json(new { res = "Blocked" }, JsonRequestBehavior.AllowGet);
+                }
+
+
+                if(job.JobState == false)
+                {
+                    return Json(new { res = "Closed" }, JsonRequestBehavior.AllowGet);
+                }
 
                 var dateTime = DateTime.Now;
 
@@ -292,7 +314,10 @@ namespace Gp_V1.Controllers
                     return Json(new { res = 1 }, JsonRequestBehavior.AllowGet);
                 }
             }
-            return Json(new { }, JsonRequestBehavior.AllowGet);
+            else
+            {
+                return Json(new { res = "unauthorized" }, JsonRequestBehavior.AllowGet);
+            }
         }
 
         public ActionResult ShowApplyedJobs(int? id){

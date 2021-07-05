@@ -1,6 +1,7 @@
 ﻿@model Gp_V1.Models.RegisterUser
-
+@using Gp_V1.Context
 @{
+    MyDbContext db = new MyDbContext();
     ViewBag.Title = "ProviderDetails";
 }
 
@@ -39,6 +40,27 @@
 
             <dd>
                 @Html.DisplayFor(model => model.CompanyName)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.CompanyField)
+            </dt>
+
+            <dd>
+                @{
+                    var obj = db.JobCategories.Find(Convert.ToInt32(Model.CompanyField));
+                    var name = obj.JobCategoryName;
+                }
+                @name
+            </dd>
+
+
+            <dt>
+                Job Title
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.JobTitle.JobTitleName)
             </dd>
 
             <dt>

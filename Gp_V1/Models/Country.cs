@@ -9,6 +9,9 @@ namespace Gp_V1.Models
     {
         public int Id { get; set; }
         public string CountryName { get; set; }
+        
+        public IEnumerable<City> Cities { get; set; }
+
         public IEnumerable<SeekerRegistration> SeekerRegistrations { get; set; }
         public IEnumerable<Job> Jobs { get; set; }
 

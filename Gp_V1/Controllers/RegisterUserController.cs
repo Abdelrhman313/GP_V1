@@ -175,6 +175,8 @@ namespace Gp_V1.Controllers
             if (Session["AdminUser"] == null && Session["UserName"] == null && Session["SeekerUser"] == null)
             {
                 ViewBag.JobTitleId = new SelectList(db.JobTitles, "Id", "JobTitleName");
+                ViewBag.CompanyField = new SelectList(db.JobCategories, "Id", "JobCategoryName");
+
                 return View();
             }
             else
@@ -192,6 +194,7 @@ namespace Gp_V1.Controllers
                 {
                     ViewBag.Notification = "The Name Is Exist Already Use Other One!";
                     ViewBag.JobTitleId = new SelectList(db.JobTitles, "Id", "JobTitleName");
+                    ViewBag.CompanyField = new SelectList(db.JobCategories, "Id", "JobCategoryName");
                     return View(registerUser);
                 }
                 else
@@ -211,12 +214,14 @@ namespace Gp_V1.Controllers
                     Session["UserId"] = registerUser.Id.ToString();
                     Session["UserName"] = registerUser.Name.ToString();
                     ViewBag.JobTitleId = new SelectList(db.JobTitles, "Id", "JobTitleName");
+                    ViewBag.CompanyField = new SelectList(db.JobCategories, "Id", "JobCategoryName");
                     return RedirectToAction("Index", "Home");
                 }
             }
             else
             {
                 ViewBag.JobTitleId = new SelectList(db.JobTitles, "Id", "JobTitleName");
+                ViewBag.CompanyField = new SelectList(db.JobCategories, "Id", "JobCategoryName");
                 return View(registerUser);
             }
         }
@@ -265,6 +270,8 @@ namespace Gp_V1.Controllers
                 if (user != null)
                 {
                     ViewBag.JobTitleId = new SelectList(db.JobTitles, "Id", "JobTitleName", user.JobTitle.JobTitleName);
+                    ViewBag.CompanyField = new SelectList(db.JobCategories, "Id", "JobCategoryName");
+
                     return View(user);
                 }
             }
@@ -291,6 +298,8 @@ namespace Gp_V1.Controllers
                 user.JobTitle = registerUser.JobTitle;
                 user.PhoneNumber = registerUser.PhoneNumber;
                 user.CompanyName = registerUser.CompanyName;
+                user.CompanyField = registerUser.CompanyField;
+                user.JobTitleId = registerUser.JobTitleId;
 
                 db.Entry(user).State = EntityState.Modified;
                 db.SaveChanges();
@@ -298,6 +307,7 @@ namespace Gp_V1.Controllers
                 return RedirectToAction("UserProfile",new { id = registerUser.Id});
             }
             ViewBag.JobTitleId = new SelectList(db.JobTitles, "Id", "JobTitleName", user.JobTitle.JobTitleName);
+            ViewBag.CompanyField = new SelectList(db.JobCategories, "Id", "JobCategoryName");
             return View(registerUser);
         }
 
@@ -369,7 +379,7 @@ namespace Gp_V1.Controllers
         {
             if (Session["AdminUser"] == null && Session["UserName"] == null && Session["SeekerUser"] == null)
             {
-                ViewBag.CityId = new SelectList(db.Cities, "Id", "CityName");
+                //ViewBag.CityId = new SelectList(db.Cities, "Id", "CityName");
                 ViewBag.CountryId = new SelectList(db.Countries, "Id", "CountryName");
                 ViewBag.NationalityId = new SelectList(db.Nationalities, "Id", "NationalityName");
                 ViewBag.LanguageId = new SelectList(db.Languages, "Id", "LanguageName");
@@ -409,10 +419,13 @@ namespace Gp_V1.Controllers
                     {
                         seekerRegistration.SeekerImage = "https://via.placeholder.com/150/000000/";
                     }
-                    string path = Path.Combine(Server.MapPath("~/Upload/SeekersImage"), seekerPhoto.FileName);
-                    seekerPhoto.SaveAs(path);
-                    seekerRegistration.SeekerImage = seekerPhoto.FileName;
+                    else
+                    {
+                        string path = Path.Combine(Server.MapPath("~/Upload/SeekersImage"), seekerPhoto.FileName);
+                        seekerPhoto.SaveAs(path);
+                        seekerRegistration.SeekerImage = seekerPhoto.FileName;
 
+                    }
                     string path2 = Path.Combine(Server.MapPath("~/Upload/SeekersCv"), seekerCv.FileName);
                     seekerCv.SaveAs(path2);
                     seekerRegistration.SeekerCV = seekerCv.FileName;
@@ -584,7 +597,7 @@ namespace Gp_V1.Controllers
 
                 return RedirectToAction("SeekerProfile", new { id = seeker.Id });
             }
-            ViewBag.CityId = new SelectList(db.Cities, "Id", "CityName");
+            //ViewBag.CityId = new SelectList(db.Cities, "Id", "CityName");
             ViewBag.CountryId = new SelectList(db.Countries, "Id", "CountryName");
             ViewBag.NationalityId = new SelectList(db.Nationalities, "Id", "NationalityName");
             ViewBag.LanguageId = new SelectList(db.Languages, "Id", "LanguageName");

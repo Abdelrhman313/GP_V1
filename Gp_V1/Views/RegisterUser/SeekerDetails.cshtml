@@ -231,101 +231,114 @@
     <div class="col-md-6">
         <div class="previous-work">
             <h4 class="text-primary mb-3 d-inline-block" style="border-bottom: 2px solid #0094ff">Previous Work</h4>
-            <div>
-                <span>
-                    Job Title
-                </span>
+            @if (Model.CompanyName.ToString() == "none" || Model.Salary == 0)
+            {
+                <div class="alert alert-danger">Does not have a job previously</div>
+            }
+            else
+            {
+                <div>
+                    <span>
+                        Job Title
+                    </span>
 
-                <span>
-                    @Model.JobTitle.JobTitleName
-                </span>
-            </div>
-            <div>
-                <span>
-                    Job Category
-                </span>
+                    <span>
+                        @Model.JobTitle.JobTitleName
+                    </span>
+                </div>
+                <div>
+                    <span>
+                        Job Category
+                    </span>
 
-                <span>
-                    @Model.JobCategory.JobCategoryName
-                </span>
-            </div>
-            <div>
-                <span>
-                    Company Name
-                </span>
+                    <span>
+                        @Model.JobCategory.JobCategoryName
+                    </span>
+                </div>
+                <div>
+                    <span>
+                        Company Name
+                    </span>
 
-                <span>
-                    @Model.CompanyName
-                </span>
-            </div>
-            <div>
-                <span>
-                    Duration
-                </span>
+                    <span>
+                        @Model.CompanyName
+                    </span>
+                </div>
+                <div>
+                    <span>
+                        Duration
+                    </span>
 
-                <span>
-                    @Model.Duration Year
-                </span>
-            </div>
-            <div>
-                <span>
-                    Salary
-                </span>
+                    <span>
+                        @Model.Duration Year
+                    </span>
+                </div>
+                <div>
+                    <span>
+                        Salary
+                    </span>
 
-                <span>
-                    @Model.Salary$
-                </span>
-            </div>
+                    <span>
+                        @Model.Salary$
+                    </span>
+                </div>
+            }
         </div>
     </div>
     <div class="col-md-6">
         <div class="Current-work pl-4">
             <h4 class="text-primary mb-3 d-inline-block" style="border-bottom: 2px solid #0094ff">Current Work</h4>
-            <div>
-                <span>
-                    Job Title
-                </span>
+            @if (Model.CurrentCompanyName.ToString() == "none" || Model.CurrentSalary == 0)
+            {
+                <div class="alert alert-danger">Does not have a job currently</div>
+            }
+            else { 
+                <div>
+                    <span>
+                        Job Title
+                    </span>
 
-                <span>
-                    @Model.CurrentJobTitle
-                </span>
-            </div>
-            <div>
-                <span>
-                    Job Category
-                </span>
+                    <span>
+                        @Model.CurrentJobTitle
+                    </span>
+                </div>
+                <div>
+                    <span>
+                        Job Category
+                    </span>
 
-                <span>
-                    @Model.CurrentJobCategory
-                </span>
-            </div>
-            <div>
-                <span>
-                    Company Name
-                </span>
+                    <span>
+                        @Model.CurrentJobCategory
+                    </span>
+                </div>
+                <div>
+                    <span>
+                        Company Name
+                    </span>
 
-                <span>
-                    @Model.CurrentCompanyName
-                </span>
-            </div>
-            <div>
-                <span>
-                    Duration
-                </span>
+                    <span>
+                        @Model.CurrentCompanyName
+                    </span>
+                </div>
+                <div>
+                    <span>
+                        Duration
+                    </span>
 
-                <span>
-                    @Model.CurrentDuration Year
-                </span>
-            </div>
-            <div>
-                <span>
-                    Salary
-                </span>
+                    <span>
+                        @Model.CurrentDuration Year
+                    </span>
+                </div>
+                <div>
+                    <span>
+                        Salary
+                    </span>
 
-                <span>
-                    @Model.CurrentSalary$
-                </span>
-            </div>
+                    <span>
+                        @Model.CurrentSalary$
+                    </span>
+                </div>
+            }
         </div>
     </div>
 </div>

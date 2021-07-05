@@ -218,133 +218,148 @@
 
             <div class="section">
                 <h4 class="text-dark mb-3 d-inline-block" style="border-bottom: 2px solid #444;">Previous Work Info</h4>
+                @if (Model.CompanyName.ToString() == "none" || Model.Salary == 0)
+                {
+                    <div class="alert alert-danger">Does not have a job previously</div>
+                }
+                else
+                {
 
-                <div class="attr">
-                    <span>
-                        Job Title
-                    </span>
+                    <div class="attr">
+                        <span>
+                            Job Title
+                        </span>
 
-                    <span>
-                        @Html.DisplayFor(model => model.JobTitle.JobTitleName)
-                    </span>
-                </div>
+                        <span>
+                            @Html.DisplayFor(model => model.JobTitle.JobTitleName)
+                        </span>
+                    </div>
 
-                <div class="attr">
-                    <span>
-                        Company Name
-                    </span>
+                    <div class="attr">
+                        <span>
+                            Company Name
+                        </span>
 
-                    <span>
-                        @Html.DisplayFor(model => model.CompanyName)
-                    </span>
-                </div>
+                        <span>
+                            @Html.DisplayFor(model => model.CompanyName)
+                        </span>
+                    </div>
 
-                <div class="attr">
-                    <span>
-                        Company Field
-                    </span>
+                    <div class="attr">
+                        <span>
+                            Company Field
+                        </span>
 
-                    <span>
-                        @Html.DisplayFor(model => model.JobCategory.JobCategoryName)
-                    </span>
-                </div>
+                        <span>
+                            @Html.DisplayFor(model => model.JobCategory.JobCategoryName)
+                        </span>
+                    </div>
 
-                <div class="attr">
-                    <span>
-                        Job Type
-                    </span>
+                    <div class="attr">
+                        <span>
+                            Job Type
+                        </span>
 
-                    <span>
-                        @Html.DisplayFor(model => model.JobType.JobTypeName)
-                    </span>
-                </div>
+                        <span>
+                            @Html.DisplayFor(model => model.JobType.JobTypeName)
+                        </span>
+                    </div>
 
-                <div class="attr">
-                    <span>
-                        Salary
-                    </span>
+                    <div class="attr">
+                        <span>
+                            Salary
+                        </span>
 
-                    <span>
-                        @Html.DisplayFor(model => model.Salary)$
-                    </span>
-                </div>
+                        <span>
+                            @Html.DisplayFor(model => model.Salary)$
+                        </span>
+                    </div>
 
-                <div class="attr">
-                    <span>
-                        Duration
-                    </span>
+                    <div class="attr">
+                        <span>
+                            Duration
+                        </span>
 
-                    <span>
-                        @Html.DisplayFor(model => model.Duration) Year
-                    </span>
-                </div>
+                        <span>
+                            @Html.DisplayFor(model => model.Duration) Year
+                        </span>
+                    </div>
+                }
             </div>
 
             <hr />
 
-            <div class="section">
-                <h4 class="text-dark mb-3 d-inline-block" style="border-bottom: 2px solid #444;">Current Work Info</h4>
+            <h4 class="text-dark mb-3 d-inline-block" style="border-bottom: 2px solid #444;">Current Work Info</h4>
 
-                <div class="attr">
-                    <span>
-                        Job Title
-                    </span>
+            @if (Model.CurrentCompanyName.ToString() == "none" || Model.CurrentSalary == 0)
+            {
+                <div class="alert alert-danger">Does not have a job currently</div>
+            }
+            else
+            {
+                <div class="section">
 
-                    <span>
-                        @Html.DisplayFor(model => model.CurrentJobTitle)
-                    </span>
+                    <div class="attr">
+                        <span>
+                            Job Title
+                        </span>
+
+                        <span>
+                            @Html.DisplayFor(model => model.CurrentJobTitle)
+                        </span>
+                    </div>
+
+                    <div class="attr">
+                        <span>
+                            Company Name
+                        </span>
+
+                        <span>
+                            @Html.DisplayFor(model => model.CurrentCompanyName)
+                        </span>
+                    </div>
+
+                    <div class="attr">
+                        <span>
+                            Company Field
+                        </span>
+
+                        <span>
+                            @Html.DisplayFor(model => model.CurrentJobCategory)
+                        </span>
+                    </div>
+
+                    <div class="attr">
+                        <span>
+                            Job Type
+                        </span>
+
+                        <span>
+                            @Html.DisplayFor(model => model.CurrentJobType)
+                        </span>
+                    </div>
+
+                    <div class="attr">
+                        <span>
+                            Salary
+                        </span>
+
+                        <span>
+                            @Html.DisplayFor(model => model.CurrentSalary)$
+                        </span>
+                    </div>
+
+                    <div class="attr">
+                        <span>
+                            Duration
+                        </span>
+
+                        <span>
+                            @Html.DisplayFor(model => model.CurrentDuration) Year
+                        </span>
+                    </div>
                 </div>
-
-                <div class="attr">
-                    <span>
-                        Company Name
-                    </span>
-
-                    <span>
-                        @Html.DisplayFor(model => model.CurrentCompanyName)
-                    </span>
-                </div>
-
-                <div class="attr">
-                    <span>
-                        Company Field
-                    </span>
-
-                    <span>
-                        @Html.DisplayFor(model => model.CurrentJobCategory)
-                    </span>
-                </div>
-
-                <div class="attr">
-                    <span>
-                        Job Type
-                    </span>
-
-                    <span>
-                        @Html.DisplayFor(model => model.CurrentJobType)
-                    </span>
-                </div>
-
-                <div class="attr">
-                    <span>
-                        Salary
-                    </span>
-
-                    <span>
-                        @Html.DisplayFor(model => model.CurrentSalary)$
-                    </span>
-                </div>
-
-                <div class="attr">
-                    <span>
-                        Duration
-                    </span>
-
-                    <span>
-                        @Html.DisplayFor(model => model.CurrentDuration) Year
-                    </span>
-                </div>
-            </div>
+            }
         </div>
     </div>
     <div class="col-md-6">

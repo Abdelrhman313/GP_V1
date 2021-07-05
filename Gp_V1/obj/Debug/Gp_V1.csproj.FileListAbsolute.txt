@@ -77,5 +77,7 @@ C:\Users\Abdelrhman\source\repos\Gp_V1\Gp_V1\obj\Debug\Gp_V1.csproj.CopyComplete
 C:\Users\Abdelrhman\source\repos\Gp_V1\Gp_V1\obj\Debug\Gp_V1.dll
 C:\Users\Abdelrhman\source\repos\Gp_V1\Gp_V1\obj\Debug\Gp_V1.pdb
 C:\Users\Abdelrhman\source\repos\Gp_V1\Gp_V1\bin\GridMvc.dll
-C:\Users\Abdelrhman\source\repos\Gp_V1\Gp_V1\obj\Debug\Gp_V1.Migrations.initialmigration.resources
+C:\Users\Abdelrhman\source\repos\Gp_V1\Gp_V1\obj\Debug\Gp_V1.csprojAssemblyReference.cache
+C:\Users\Abdelrhman\source\repos\Gp_V1\Gp_V1\obj\Debug\Gp_V1.Migrations.createdatabase.resources
 C:\Users\Abdelrhman\source\repos\Gp_V1\Gp_V1\obj\Debug\Gp_V1.csproj.GenerateResource.cache
+C:\Users\Abdelrhman\source\repos\Gp_V1\Gp_V1\obj\Debug\Gp_V1.Migrations.editCityAndCountryModels.resources

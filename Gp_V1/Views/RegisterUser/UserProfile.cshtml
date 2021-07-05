@@ -1,6 +1,8 @@
 ﻿@model Gp_V1.Models.RegisterUser
-
+@using Gp_V1.Context
 @{
+    MyDbContext db = new MyDbContext();
+
     ViewBag.Title = "User Profile";
 }
 
@@ -111,7 +113,11 @@
                 </span>
 
                 <span>
-                    @Html.DisplayFor(model => model.CompanyField)
+                    @{ 
+                        var obj = db.JobCategories.Find(Convert.ToInt32(Model.CompanyField));
+                        var name = obj.JobCategoryName;   
+                    }
+                    @name
                 </span>
             </div>
 

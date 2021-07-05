@@ -6,7 +6,7 @@
 
 <style>
     .header-info {
-        padding: 50px 0px 100px;
+        padding: 0px 0px 100px;
         position: relative;
     }
 
@@ -124,8 +124,14 @@
     <div class="row">
         <div class="col-lg-6 mb-3 mb-lg-0">
             <div class="header-info">
-                <h1>Welcom To Job Portal</h1>
-                <p>Lorem Ipsum is simply dummy text of the printing and dummy text of the printing typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
+                <h1 style="font-size: 46px;margin-top: 0px;font-family: 'Comic Sans MS';">
+                    <span style="font-size: 26px">Welcom To</span>
+                    <br />
+                    Job Board Portal
+                    <br />
+                    <span style="font-size: 26px;display: block;margin-top: 5px !important;">Find Your Dream Job</span>
+                </h1>
+                <p style="text-align: justify">Lorem Ipsum is simply dummy text of the printing and dummy text of the printing typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="#6c63ff" fill-opacity="1" d="M0,32L43.6,160L87.3,224L130.9,32L174.5,224L218.2,160L261.8,288L305.5,160L349.1,64L392.7,288L436.4,96L480,288L523.6,288L567.3,64L610.9,160L654.5,256L698.2,128L741.8,160L785.5,32L829.1,64L872.7,224L916.4,160L960,256L1003.6,96L1047.3,128L1090.9,256L1134.5,160L1178.2,64L1221.8,192L1265.5,256L1309.1,128L1352.7,96L1396.4,160L1440,160L1440,320L1396.4,320L1352.7,320L1309.1,320L1265.5,320L1221.8,320L1178.2,320L1134.5,320L1090.9,320L1047.3,320L1003.6,320L960,320L916.4,320L872.7,320L829.1,320L785.5,320L741.8,320L698.2,320L654.5,320L610.9,320L567.3,320L523.6,320L480,320L436.4,320L392.7,320L349.1,320L305.5,320L261.8,320L218.2,320L174.5,320L130.9,320L87.3,320L43.6,320L0,320Z"></path></svg>
             </div>
         </div>
@@ -168,32 +174,42 @@
 <hr />
 
 <div class="jobsInEachCity">
-    <h2>Jobs In Each City</h2>
-    <div class="row">
-        @if (Model.Cities.Count() == 0)
-        {
-            <div class="col-12 text-center alert alert-danger">
-                No Cities Added In Portal Yet!
-            </div>
-        }
-        else
-        {
-            foreach (var city in Model.Cities)
-            {
-                <div class="col-md-4 mb-3">
-                    <div class="cityJobs">
-                        <a href="/Job/GetJobInCity/@city.Id">
-                            <span>
-                                <i class="fa fa-dot-circle-o text-dark"></i>
-                                @city.CityName
-                            </span>
-                            <span>(@Model.Jobs.Where(j => j.City.CityName == city.CityName).Count())</span>
-                        </a>
-                    </div>
-                </div>
-            }
-        }
+    <h2>Jobs In Each Country</h2>
+    <br />
+    @if (Model.Countries.Count() == 0)
+    {
+        <div class="col-12 text-center alert alert-danger">
+            No Cities Added In Portal Yet!
         </div>
+    }
+    else
+    {
+        foreach (var country in Model.Countries)
+        {
+            <h3 class="mb-4 pb-2 pr-1 d-inline-flex" style="font-family: 'Comic Sans MS';letter-spacing: 1px;border-bottom: 3px solid #444">
+                <i class="fa fa-dot-circle-o"></i> 
+                @country.CountryName
+            </h3>
+
+            <div class="row">
+                @foreach (var city in Model.Cities.Where(c => c.CountryId == country.Id).ToList())
+                {
+                    <div class="col-md-4 mb-3">
+                        <div class="cityJobs">
+                            <a href="/Job/GetJobInCity/@city.Id">
+                                <span>
+                                    <i class="fa fa-dot-circle-o text-dark"></i>
+                                    @city.CityName
+                                </span>
+                                <span>(@Model.Jobs.Where(j => j.CityId == city.Id).Count())</span>
+                            </a>
+                        </div>
+                    </div>
+                }
+            </div>
+            <hr />
+        }
+    }
 </div>
 
 <hr />

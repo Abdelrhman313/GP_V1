@@ -71,6 +71,10 @@
 
             <div class="fields mt-2">
                 <div class="field">
+                    <span>Company Name: </span>
+                    <span>@Model.RegisterUser.CompanyName</span>
+                </div>
+                <div class="field">
                     <span>Job Type: </span>
                     <span>@Model.JobType.JobTypeName</span>
                 </div>
@@ -137,10 +141,8 @@
         @Html.ActionLink("Back To Jobs", "Index", null, new { @class = "btn btn-dark" })
     }
 
-    @if (Session["SeekerUser"] != null && @ViewBag.SeekerState == true && Model.JobState == true)
-    {
+    
         <button class="btn btn-success applyBtn" data-id="@Model.Id">Apply Now</button>
-    }
 </p>
 
 
@@ -182,14 +184,42 @@
                                     title: "Apply Job!",
                                     text: "You Applyed For Job Successfully!",
                                     icon: "success",
+                                    button: "OK",
+                                });
+                            }
+                            else if (result.res == "unauthorized") {
+                                swal({
+                                    title: "Apply Job!",
+                                    text: "You Are unauthorized Please Log in And Try Again!",
+                                    icon: "error",
                                     button: null,
                                 });
-                            } else {
+                                setTimeout(() => {
+                                    location.href = "../../RegisterUser/LoginForAll";
+                                }, 5000)
+                            }
+                            else if (result.res == "Blocked") {
+                                swal({
+                                    title: "Apply Job!",
+                                    text: "You Are Blocked From Admin Can't Apply For Jobs Now!",
+                                    icon: "error",
+                                    button: "OK",
+                                });
+                            }
+                            else if (result.res == "Closed") {
+                                swal({
+                                    title: "Apply Job!",
+                                    text: "The Job Is Closed Can't Apply For This Job Now!",
+                                    icon: "error",
+                                    button: "OK",
+                                });
+                            }
+                            else {
                                 swal({
                                     title: "Apply Job!",
                                     text: "You Applyed For This Job Before!",
                                     icon: "error",
-                                    button: null,
+                                    button: "OK",
                                 });
                             }
                         },

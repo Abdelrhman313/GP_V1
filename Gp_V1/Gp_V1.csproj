@@ -170,9 +170,13 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\202107021248458_initial-migration.cs" />
-    <Compile Include="Migrations\202107021248458_initial-migration.Designer.cs">
-      <DependentUpon>202107021248458_initial-migration.cs</DependentUpon>
+    <Compile Include="Migrations\202107021309390_create-database.cs" />
+    <Compile Include="Migrations\202107021309390_create-database.Designer.cs">
+      <DependentUpon>202107021309390_create-database.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202107041446019_editCityAndCountryModels.cs" />
+    <Compile Include="Migrations\202107041446019_editCityAndCountryModels.Designer.cs">
+      <DependentUpon>202107041446019_editCityAndCountryModels.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Admin.cs" />
@@ -322,8 +326,11 @@
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\202107021248458_initial-migration.resx">
-      <DependentUpon>202107021248458_initial-migration.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202107021309390_create-database.resx">
+      <DependentUpon>202107021309390_create-database.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202107041446019_editCityAndCountryModels.resx">
+      <DependentUpon>202107041446019_editCityAndCountryModels.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
